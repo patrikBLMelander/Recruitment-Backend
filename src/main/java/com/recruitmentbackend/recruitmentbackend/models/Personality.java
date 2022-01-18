@@ -29,10 +29,16 @@ public class Personality {
     private UUID id;
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "value", nullable = false)
     private Integer value;
 
     @ManyToOne
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
+
+    public Personality(String name, Integer value) {
+        this.name = name;
+        this.value = value;
+    }
 }
