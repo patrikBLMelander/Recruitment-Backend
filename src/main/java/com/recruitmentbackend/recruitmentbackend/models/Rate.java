@@ -21,7 +21,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
 @Slf4j
 public class Rate {
     @Id
@@ -32,8 +31,12 @@ public class Rate {
     @Column(name = "count", nullable = false)
     private Integer count;
 
-    @Column(name = "id", nullable = false)
+    @Column(name = "job_offer_id", nullable = false)
     private String jobOfferId;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
 
 }

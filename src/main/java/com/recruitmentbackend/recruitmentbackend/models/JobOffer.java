@@ -1,11 +1,13 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,13 +19,14 @@ import java.util.UUID;
  * Copyright: MIT
  */
 @Entity
-@Table(name = "jobOffer")
+@Table(name = "job_offer")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Slf4j
 public class JobOffer {
     @Id
@@ -44,12 +47,27 @@ public class JobOffer {
     private String aboutRole;
 
     @OneToMany(mappedBy = "jobOffer")
-    private List<RecruitmentStep> recruitmentStepList;
+    private List<Recruitment> recruitmentList = defaultRecruitmentStepsList();
 
     @OneToMany(mappedBy = "jobOffer")
-    private List<Competence> competenceList;
+    private List<Competence> competenceList = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "location_ID")
+    @JoinColumn(name = "location_id")
     private Location location;
+
+    public List<Recruitment> defaultRecruitmentStepsList(){
+        List<Recruitment> listToReturn = new ArrayList<>();
+        Recruitment apply = new Recruitment("apply");
+        Recruitment interesting = new Recruitment("interesting");
+        Recruitment interview = new Recruitment("interview");
+        Recruitment dismiss = new Recruitment("dismiss");
+        Recruitment hire = new Recruitment("hire");
+        listToReturn.add(apply);
+        listToReturn.add(interesting);
+        listToReturn.add(interview);
+        listToReturn.add(dismiss);
+        listToReturn.add(hire);
+        return listToReturn;
+    }
 }

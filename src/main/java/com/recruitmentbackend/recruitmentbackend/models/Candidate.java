@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
 import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;
 import lombok.*;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Slf4j
 public class Candidate {
     @Id
@@ -68,6 +70,10 @@ public class Candidate {
 
     @OneToMany(mappedBy = "candidate")
     private List<Personality> personalityList  = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "recruitment_id")
+    private Recruitment recruitment;
 
     public void addRoleToUser(String roleName, RoleRepository roleRepository) {
         if(this.roleList == null) {

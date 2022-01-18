@@ -21,7 +21,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
 @Slf4j
 public class Personality {
     @Id
@@ -32,4 +31,8 @@ public class Personality {
     private String name;
     @Column(name = "value", nullable = false)
     private Integer value;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 }

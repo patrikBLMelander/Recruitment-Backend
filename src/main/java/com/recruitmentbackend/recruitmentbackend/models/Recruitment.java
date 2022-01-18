@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,13 +17,13 @@ import java.util.UUID;
  * Copyright: MIT
  */
 @Entity
-@Table(name = "recruitment_step")
+@Table(name = "recruitment")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class RecruitmentStep {
+public class Recruitment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -30,6 +31,17 @@ public class RecruitmentStep {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "recruitment_step")
+    @OneToMany(mappedBy = "recruitment")
             private List<Candidate> candidateList;
+
+    @ManyToOne
+    @JoinColumn(name = "jobOffer_id")
+    private JobOffer jobOffer;
+
+    public Recruitment(String title) {
+        this.title = title;
+        List<Candidate> candidateList = new ArrayList<>();
+    }
+
+
 }

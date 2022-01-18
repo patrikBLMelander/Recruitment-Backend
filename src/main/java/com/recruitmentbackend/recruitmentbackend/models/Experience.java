@@ -22,7 +22,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
 @Slf4j
 public class Experience {
     @Id
@@ -37,4 +36,8 @@ public class Experience {
     private LocalDate endDate;
     @Column(name = "description", length = 1000, nullable = false)
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 }

@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Slf4j
 public class Competence {
     @Id
@@ -32,4 +34,12 @@ public class Competence {
     private String name;
     @Column(name = "value", nullable = false)
     private Integer value;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
+
+    @ManyToOne
+    @JoinColumn(name = "jobOffer_id")
+    private JobOffer jobOffer;
 }
