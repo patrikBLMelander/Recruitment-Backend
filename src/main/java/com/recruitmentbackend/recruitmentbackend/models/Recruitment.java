@@ -32,6 +32,7 @@ public class Recruitment {
     private String title;
 
     @OneToMany(mappedBy = "recruitment")
+    @LazyCollection(LazyCollectionOption.FALSE)
             private List<Candidate> candidateList;
 
     @ManyToOne
@@ -42,6 +43,5 @@ public class Recruitment {
         this.title = title;
         List<Candidate> candidateList = new ArrayList<>();
     }
-
 
 }

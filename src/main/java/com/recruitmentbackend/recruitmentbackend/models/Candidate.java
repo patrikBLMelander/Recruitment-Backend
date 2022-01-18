@@ -6,6 +6,8 @@ import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 import javax.persistence.*;
@@ -52,23 +54,30 @@ public class Candidate {
     private String presentation;
     @Column(name = "is_admin")
     private Boolean isAdmin;
+    @Column(name = "color_choice", length = 30)
+    private String colorChoice;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roleList;
 
     @OneToMany(mappedBy = "candidate")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Rate> rates = new ArrayList<>();
 
     @OneToMany(mappedBy = "candidate")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Experience> experienceList = new ArrayList<>();
 
     @OneToMany(mappedBy = "candidate")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Education> educationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "candidate")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Competence> competenciesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "candidate")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Personality> personalityList  = new ArrayList<>();
 
     @ManyToOne

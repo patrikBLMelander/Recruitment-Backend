@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -47,9 +49,11 @@ public class JobOffer {
     private String aboutRole;
 
     @OneToMany(mappedBy = "jobOffer")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Recruitment> recruitmentList = defaultRecruitmentStepsList();
 
     @OneToMany(mappedBy = "jobOffer")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Competence> competenceList = new ArrayList<>();
 
     @ManyToOne
