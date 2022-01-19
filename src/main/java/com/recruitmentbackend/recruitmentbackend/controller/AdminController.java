@@ -2,7 +2,6 @@ package com.recruitmentbackend.recruitmentbackend.controller;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,6 @@ import com.recruitmentbackend.recruitmentbackend.models.Competence;
 import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.models.Recruitment;
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.CompetenceRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.JobOfferRepository;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +15,8 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
 
 /**
  * Created by Patrik Melander
@@ -36,8 +33,6 @@ public class JobOfferService {
     private final JobOfferRepository jobRepo;
     private final ServiceHelper serviceHelper;
     private final CandidateRepository candidateRepo;
-    private final JobOfferRepository jobOfferRepo;
-    LocalDate date;
 
     public List<JobOffer> getAllJobOffers() {
         log.info("Fetching all jobOffers");
@@ -49,7 +44,7 @@ public class JobOfferService {
         JobOffer newJobOffer = new JobOffer();
 
         newJobOffer.setTitle(request.getTitle());
-        newJobOffer.setPublishDate(date.now());
+        newJobOffer.setPublishDate(LocalDate.now());
         newJobOffer.setApplyDate(request.getApplyDate());
         newJobOffer.setPreview(request.getPreview());
         newJobOffer.setCompanyDescription(request.getCompanyDescription());

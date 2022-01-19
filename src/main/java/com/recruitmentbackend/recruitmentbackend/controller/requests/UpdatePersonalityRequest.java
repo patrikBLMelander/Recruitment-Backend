@@ -1,6 +1,5 @@
 package com.recruitmentbackend.recruitmentbackend.controller.requests;
 
-import com.recruitmentbackend.recruitmentbackend.models.Personality;
 import lombok.Getter;
 import lombok.Value;
 
