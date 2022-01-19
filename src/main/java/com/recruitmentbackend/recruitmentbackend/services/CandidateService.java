@@ -1,6 +1,7 @@
 package com.recruitmentbackend.recruitmentbackend.services;
 
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.models.*;
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
@@ -55,14 +56,7 @@ public class CandidateService {
 
         newCandidate.setRoleList(List.of(role));
 
-        newCandidate.setPresentation("");
-        newCandidate.setExperienceList(new ArrayList<Experience>());
-        newCandidate.setEducationList(new ArrayList<Education>());
-        newCandidate.setCompetenciesList(new ArrayList<Competence>());
-        newCandidate.setColorChoice("default");
-        newCandidate.setIsAdmin(false);
-        newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
-        newCandidate.setRates(new ArrayList<Rate>());
+        FillEmptyFields(newCandidate);
 
         candidateRepo.saveAndFlush(newCandidate);
 
@@ -72,5 +66,40 @@ public class CandidateService {
     }
 
 
+    public String createAdmin(CreateNewAdminRequest request) {
+        serviceHelper.checkIfEmailExists(request.getEmail());
+        var role = roleRepo.getByName(Role.RoleConstant.ADMIN);
 
+        Candidate newCandidate = new Candidate();
+
+        newCandidate.setFirstName(request.getFirstName());
+        newCandidate.setLastName(request.getLastName());
+        newCandidate.setEmail(request.getEmail());
+        newCandidate.setPassword(encoder.encode(request.getPassword()));
+        newCandidate.setRoleList(List.of(role));
+
+        newCandidate.setPhone("");
+        newCandidate.setNickName(1);
+
+        FillEmptyFields(newCandidate);
+
+        candidateRepo.saveAndFlush(newCandidate);
+
+        final String msg = String.format("Admin created: %s", newCandidate.getId());
+        log.info(msg);
+
+
+        return msg;
+    }
+
+    private void FillEmptyFields(Candidate newCandidate) {
+        newCandidate.setPresentation("");
+        newCandidate.setExperienceList(new ArrayList<Experience>());
+        newCandidate.setEducationList(new ArrayList<Education>());
+        newCandidate.setCompetenciesList(new ArrayList<Competence>());
+        newCandidate.setColorChoice("default");
+        newCandidate.setIsAdmin(false);
+        newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
+        newCandidate.setRates(new ArrayList<Rate>());
+    }
 }

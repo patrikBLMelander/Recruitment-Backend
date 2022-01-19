@@ -42,7 +42,8 @@ public class PublicController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    //Denna ska ligga i Admin senare
+    //Denna ska ligga i Admin senare,
+    //lättare att testa om det fungerar i Postman om man inte behöver vara inloggad under utvecklingen
     @GetMapping(CANDIDATES)
     public ResponseEntity<List<Candidate>> getCandidates() {
         var result = candidateService.getCandidates();
