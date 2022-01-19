@@ -1,18 +1,20 @@
 package com.recruitmentbackend.recruitmentbackend.services;
 
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.AddEducationRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.AddExperienceRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.models.*;
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.EducationRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.ExperienceRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class CandidateService {
     private final RoleRepository roleRepo;
     private final PasswordEncoder encoder;
     private final ServiceHelper serviceHelper;
+    private final ExperienceRepository experienceRepo;
+    private final EducationRepository educationRepo;
 
     public List<Candidate> getCandidates() {
         log.info("Fetching all candidates");
@@ -92,6 +96,46 @@ public class CandidateService {
         return msg;
     }
 
+    public String addExperience(AddExperienceRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+        Experience newExperience = new Experience();
+        newExperience.setCandidate(candidate);
+        newExperience.setTitle(request.getTitle());
+        newExperience.setDescription(request.getDescription());
+        newExperience.setStartDate(request.getStartDate());
+        newExperience.setEndDate(request.getEndDate());
+
+        experienceRepo.saveAndFlush(newExperience);
+
+        candidate.getExperienceList().add(newExperience);
+
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("Experience added to user %s", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
+    public String addEducation(AddEducationRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+        Education newEducation = new Education();
+        newEducation.setCandidate(candidate);
+        newEducation.setTitle(request.getTitle());
+        newEducation.setDescription(request.getDescription());
+        newEducation.setStartDate(request.getStartDate());
+        newEducation.setEndDate(request.getEndDate());
+
+        educationRepo.saveAndFlush(newEducation);
+
+        candidate.getEducationList().add(newEducation);
+
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("Education added to user %s", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
     private void FillEmptyFields(Candidate newCandidate) {
         newCandidate.setPresentation("");
         newCandidate.setExperienceList(new ArrayList<Experience>());
@@ -102,4 +146,6 @@ public class CandidateService {
         newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
         newCandidate.setRates(new ArrayList<Rate>());
     }
+
+
 }

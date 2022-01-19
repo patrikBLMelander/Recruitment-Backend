@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
 import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;
@@ -81,6 +82,7 @@ public class Candidate {
     private List<Personality> personalityList  = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 

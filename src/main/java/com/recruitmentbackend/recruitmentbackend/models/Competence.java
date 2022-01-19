@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,16 +31,19 @@ public class Competence {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
-    @Column(name = "value", nullable = false)
+    @Column(name = "value")
     private Integer value;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
     @ManyToOne
-    @JoinColumn(name = "jobOffer_id")
+    @JsonIgnore
+    @JoinColumn(name = "job_offer_id")
     private JobOffer jobOffer;
+
 }
