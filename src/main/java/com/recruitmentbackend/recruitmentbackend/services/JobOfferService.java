@@ -60,7 +60,6 @@ public class JobOfferService {
 
 
         jobRepo.saveAndFlush(newJobOffer);
-        System.out.println(newJobOffer.toString());
         List<Competence> competenceList = serviceHelper.fillCompetenceList(request, newJobOffer);
         List<Recruitment> recruitmentList = serviceHelper.defaultRecruitmentStepsList(newJobOffer);
         newJobOffer.setRecruitmentList(recruitmentList);

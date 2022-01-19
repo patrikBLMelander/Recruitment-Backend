@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,18 +28,19 @@ public class Personality {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
-
-    @Column(name = "value", nullable = false)
+    @Column(name = "value")
     private Integer value;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
-    public Personality(String name, Integer value) {
+    public Personality(String name, Integer value, Candidate candidate) {
         this.name = name;
         this.value = value;
+        this.candidate=candidate;
     }
 }

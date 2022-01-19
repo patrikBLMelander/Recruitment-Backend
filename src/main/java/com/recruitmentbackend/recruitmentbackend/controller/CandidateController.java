@@ -45,9 +45,14 @@ public class CandidateController {
         var result = candidateService.addCompetence(competenceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-    @PutMapping(PRESENTATION)
-    public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentation) {
-        var result = candidateService.updatePresentation(updatePresentation);
+    @PutMapping(UPDATE+PRESENTATION)
+    public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentationRequest) {
+        var result = candidateService.updatePresentation(updatePresentationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+    @PutMapping(UPDATE+PERSONALITY)
+    public ResponseEntity<?> updatePersonality(@RequestBody UpdatePersonalityRequest updatePersonalityRequest) {
+        var result = candidateService.updatePersonality(updatePersonalityRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

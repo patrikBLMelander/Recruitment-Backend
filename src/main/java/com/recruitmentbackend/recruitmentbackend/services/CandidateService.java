@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class CandidateService {
         return candidateRepo.findAll();
     }
 
-
+    @Transactional
     public String createCandidate(RegisterCandidateRequest request) {
         serviceHelper.checkIfEmailExists(request.getEmail());
         final String phone = serviceHelper.formatPhoneForStorage(request.getPhone());
@@ -59,12 +60,16 @@ public class CandidateService {
 
         candidateRepo.saveAndFlush(newCandidate);
 
+        List<Personality> personalityList = serviceHelper.createPersonalityProfile(newCandidate);
+        newCandidate.setPersonalityList(personalityList);
+
+
         final String msg = String.format("Candidate created: %s", newCandidate.getId());
         log.info(msg);
         return msg;
     }
 
-
+    @Transactional
     public String createAdmin(CreateNewAdminRequest request) {
         serviceHelper.checkIfEmailExists(request.getEmail());
         var role = roleRepo.getByName(Role.RoleConstant.ADMIN);
@@ -90,7 +95,7 @@ public class CandidateService {
 
         return msg;
     }
-
+    @Transactional
     public String updatePresentation(UpdatePresentationRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
         candidate.setPresentation(request.getPresentation());
@@ -102,6 +107,25 @@ public class CandidateService {
         return msg;
     }
 
+    @Transactional
+    public String updatePersonality(UpdatePersonalityRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+
+        candidate.getPersonalityList().get(0).setValue(request.getOpenness());
+        candidate.getPersonalityList().get(1).setValue(request.getConscientiousness());
+        candidate.getPersonalityList().get(2).setValue(request.getExtroversion());
+        candidate.getPersonalityList().get(3).setValue(request.getAgreeableness());
+        candidate.getPersonalityList().get(4).setValue(request.getNeuroticism());
+
+
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("Personality updated on user %s", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
+    @Transactional
     public String addExperience(AddExperienceRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
         Experience newExperience = new Experience();
@@ -121,7 +145,7 @@ public class CandidateService {
         log.info(msg);
         return msg;
     }
-
+    @Transactional
     public String addEducation(AddEducationRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
         Education newEducation = new Education();
@@ -141,7 +165,7 @@ public class CandidateService {
         log.info(msg);
         return msg;
     }
-
+    @Transactional
     public String addCompetence(AddCompetenceRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
 
@@ -167,7 +191,6 @@ public class CandidateService {
         newCandidate.setCompetenciesList(new ArrayList<>());
         newCandidate.setColorChoice("default");
         newCandidate.setIsAdmin(false);
-        newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
         newCandidate.setRates(new ArrayList<>());
     }
 

@@ -2,10 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.utils;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
 import com.recruitmentbackend.recruitmentbackend.models.*;
-import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.CompetenceRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.JobOfferRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.RecruitmentRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,6 +28,7 @@ public class ServiceHelper {
     private final CompetenceRepository competenceRepo;
     private final RecruitmentRepository recruitmentRepo;
     private final JobOfferRepository jobRepo;
+    private final PersonalityRepository personalityRepo;
 
     public void checkIfEmailExists(String email) {
         if (candidateRepo.existsByEmail(email)) {
@@ -54,13 +52,18 @@ public class ServiceHelper {
         }
     }
 
-    public List<Personality> createPersonalityProfile( ) {
-        Personality p1 = new Personality("Openness", 50);
-        Personality p2 = new Personality("Conscientiousness", 50);
-        Personality p3 = new Personality("Extroversion", 50);
-        Personality p4 = new Personality("Agreeableness", 50);
-        Personality p5 = new Personality("Neuroticism", 50);
+    public List<Personality> createPersonalityProfile(Candidate candidate) {
         List<Personality> listToReturn = new ArrayList<>();
+        Personality p1 = new Personality("Openness", 50, candidate);
+        personalityRepo.saveAndFlush(p1);
+        Personality p2 = new Personality("Conscientiousness", 50, candidate);
+        personalityRepo.saveAndFlush(p2);
+        Personality p3 = new Personality("Extroversion", 50, candidate);
+        personalityRepo.saveAndFlush(p3);
+        Personality p4 = new Personality("Agreeableness", 50, candidate);
+        personalityRepo.saveAndFlush(p4);
+        Personality p5 = new Personality("Neuroticism", 50, candidate);
+        personalityRepo.saveAndFlush(p5);
         listToReturn.add(p1);
         listToReturn.add(p2);
         listToReturn.add(p3);
