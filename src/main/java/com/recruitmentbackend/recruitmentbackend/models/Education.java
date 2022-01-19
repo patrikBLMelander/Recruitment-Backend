@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class Education {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 }
