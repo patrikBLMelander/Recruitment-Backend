@@ -50,7 +50,7 @@ public class CandidateService {
         newCandidate.setEmail(request.getEmail());
         newCandidate.setPassword(encoder.encode(request.getPassword()));
 
-        newCandidate.setPhone(request.getPhone());
+        newCandidate.setPhone(phone);
         newCandidate.setNickName(request.getNickName());
 
         newCandidate.setRoleList(List.of(role));
@@ -162,13 +162,13 @@ public class CandidateService {
 
     private void FillEmptyFields(Candidate newCandidate) {
         newCandidate.setPresentation("");
-        newCandidate.setExperienceList(new ArrayList<Experience>());
-        newCandidate.setEducationList(new ArrayList<Education>());
-        newCandidate.setCompetenciesList(new ArrayList<Competence>());
+        newCandidate.setExperienceList(new ArrayList<>());
+        newCandidate.setEducationList(new ArrayList<>());
+        newCandidate.setCompetenciesList(new ArrayList<>());
         newCandidate.setColorChoice("default");
         newCandidate.setIsAdmin(false);
         newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
-        newCandidate.setRates(new ArrayList<Rate>());
+        newCandidate.setRates(new ArrayList<>());
     }
 
 
