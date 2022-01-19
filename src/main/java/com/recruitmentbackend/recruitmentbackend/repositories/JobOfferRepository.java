@@ -14,4 +14,5 @@ import java.util.UUID;
  * Copyright: MIT
  */
 public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
+
 }

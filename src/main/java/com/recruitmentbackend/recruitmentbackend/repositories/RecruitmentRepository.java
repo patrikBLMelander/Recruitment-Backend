@@ -3,6 +3,7 @@ package com.recruitmentbackend.recruitmentbackend.repositories;
 import com.recruitmentbackend.recruitmentbackend.models.Recruitment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**

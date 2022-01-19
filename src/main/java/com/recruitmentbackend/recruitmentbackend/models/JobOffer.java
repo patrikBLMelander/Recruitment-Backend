@@ -35,43 +35,27 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
     private String title;
-    @Column(name = "publish_date", nullable = false)
+    @Column(name = "publish_date")
     private LocalDate publishDate;
     @Column(name = "apply_date")
     private LocalDate applyDate;
-    @Column(name = "preview")
+    @Column(name = "preview", length = 2000)
     private String preview;
-    @Column(name = "company_description")
+    @Column(name = "company_description", length = 2000)
     private String companyDescription;
-    @Column(name = "about_role", nullable = false)
+    @Column(name = "about_role", length = 2000)
     private String aboutRole;
+    @Column(name = "location")
+    private String location;
 
     @OneToMany(mappedBy = "jobOffer")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Recruitment> recruitmentList = defaultRecruitmentStepsList();
+    private List<Recruitment> recruitmentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "jobOffer")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Competence> competenceList = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
-
-    public List<Recruitment> defaultRecruitmentStepsList(){
-        List<Recruitment> listToReturn = new ArrayList<>();
-        Recruitment apply = new Recruitment("apply");
-        Recruitment interesting = new Recruitment("interesting");
-        Recruitment interview = new Recruitment("interview");
-        Recruitment dismiss = new Recruitment("dismiss");
-        Recruitment hire = new Recruitment("hire");
-        listToReturn.add(apply);
-        listToReturn.add(interesting);
-        listToReturn.add(interview);
-        listToReturn.add(dismiss);
-        listToReturn.add(hire);
-        return listToReturn;
-    }
 }
