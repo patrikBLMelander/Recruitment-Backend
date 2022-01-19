@@ -18,7 +18,7 @@ public class AppConstants {
         public static final String EXPERIENCE = "/experience";
         public static final String EDUCATION = "/education";
         public static final String COMPETENCE = "/competence";
-        public static final String DESCRIPTION = "/description";
+        public static final String PRESENTATION = "/presentation";
         public static final String JOB_OFFER = "/job_offer";
     }
 }

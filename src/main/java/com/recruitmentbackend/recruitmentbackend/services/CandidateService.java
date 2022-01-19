@@ -91,6 +91,17 @@ public class CandidateService {
         return msg;
     }
 
+    public String updatePresentation(UpdatePresentationRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+        candidate.setPresentation(request.getPresentation());
+
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("Presentation updated on user %s", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
     public String addExperience(AddExperienceRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
         Experience newExperience = new Experience();

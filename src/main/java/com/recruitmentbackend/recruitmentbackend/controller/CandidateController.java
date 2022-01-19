@@ -1,9 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 
-import com.recruitmentbackend.recruitmentbackend.controller.requests.AddCompetenceRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.AddEducationRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.ApplyForJobRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.AddExperienceRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +45,11 @@ public class CandidateController {
         var result = candidateService.addCompetence(competenceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-
+    @PutMapping(PRESENTATION)
+    public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentation) {
+        var result = candidateService.updatePresentation(updatePresentation);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 
 
     //ToDo: Add/Update Description
