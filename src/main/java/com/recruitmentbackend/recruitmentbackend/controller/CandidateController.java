@@ -1,8 +1,14 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 
+import com.recruitmentbackend.recruitmentbackend.controller.requests.AddEducationRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.ApplyForJobRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.AddExperienceRequest;
+import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
+import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -16,6 +22,28 @@ import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.
 @RequestMapping(BASE_API + CANDIDATES)
 @RequiredArgsConstructor
 public class CandidateController {
+    private final JobOfferService jobOfferService;
+    private final CandidateService candidateService;
+
+
+    @PostMapping(JOB_OFFER)
+    public ResponseEntity<String> applyForJob(@RequestBody ApplyForJobRequest request) {
+        var result = jobOfferService.applyForJob(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(EXPERIENCE)
+    public ResponseEntity<?> addExperience(@RequestBody AddExperienceRequest experienceRequest) {
+        var result = candidateService.addExperience(experienceRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+    @PostMapping(EDUCATION)
+    public ResponseEntity<?> addEducation(@RequestBody AddEducationRequest educationRequest) {
+        var result = candidateService.addEducation(educationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+
 
     //ToDo: Add/Update Description
 
@@ -30,7 +58,7 @@ public class CandidateController {
 
     //ToDo: Uppdatera Personality
 
-    //ToDo: Apply for job
+
 
     //ToDo: See all job Applied for
 
