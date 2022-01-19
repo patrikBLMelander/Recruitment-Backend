@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 
+import com.recruitmentbackend.recruitmentbackend.controller.requests.AddCompetenceRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.AddEducationRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.ApplyForJobRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.AddExperienceRequest;
@@ -40,6 +41,11 @@ public class CandidateController {
     @PostMapping(EDUCATION)
     public ResponseEntity<?> addEducation(@RequestBody AddEducationRequest educationRequest) {
         var result = candidateService.addEducation(educationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+    @PostMapping(COMPETENCE)
+    public ResponseEntity<?> addCompetence(@RequestBody AddCompetenceRequest competenceRequest) {
+        var result = candidateService.addCompetence(competenceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

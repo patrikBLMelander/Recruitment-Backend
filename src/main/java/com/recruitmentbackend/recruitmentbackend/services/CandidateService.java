@@ -1,15 +1,9 @@
 package com.recruitmentbackend.recruitmentbackend.services;
 
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.AddEducationRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.AddExperienceRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
 import com.recruitmentbackend.recruitmentbackend.models.*;
-import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.EducationRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.ExperienceRepository;
-import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +30,7 @@ public class CandidateService {
     private final ServiceHelper serviceHelper;
     private final ExperienceRepository experienceRepo;
     private final EducationRepository educationRepo;
+    private final CompetenceRepository competenceRepo;
 
     public List<Candidate> getCandidates() {
         log.info("Fetching all candidates");
@@ -136,6 +131,24 @@ public class CandidateService {
         return msg;
     }
 
+    public String addCompetence(AddCompetenceRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+
+        Competence newCompetence = new Competence();
+        newCompetence.setName(request.getName());
+        newCompetence.setValue(request.getValue());
+        newCompetence.setCandidate(candidate);
+
+        competenceRepo.saveAndFlush(newCompetence);
+
+        candidate.getCompetenciesList().add(newCompetence);
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("%s added to user %s", newCompetence.getName(), candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
     private void FillEmptyFields(Candidate newCandidate) {
         newCandidate.setPresentation("");
         newCandidate.setExperienceList(new ArrayList<Experience>());
@@ -146,6 +159,7 @@ public class CandidateService {
         newCandidate.setPersonalityList(serviceHelper.createPersonalityProfile());
         newCandidate.setRates(new ArrayList<Rate>());
     }
+
 
 
 }
