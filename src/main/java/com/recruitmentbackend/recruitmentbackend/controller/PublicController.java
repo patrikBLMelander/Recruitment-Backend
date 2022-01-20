@@ -2,6 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.controller;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.models.Candidate;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
 import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
@@ -30,7 +31,7 @@ public class PublicController {
     private final CandidateService candidateService;
 
     @GetMapping(JOB_OFFER)
-    public ResponseEntity<List<JobOffer>> getJobOffer() {
+    public ResponseEntity<List<CandidateJobOfferDTO>> getJobOffer() {
         var result = jobService.getAllJobOffers();
         return ResponseEntity.ok(result);
     }
