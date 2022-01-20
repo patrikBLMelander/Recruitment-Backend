@@ -22,6 +22,7 @@ public class AppConstants {
         public static final String JOB_OFFER = "/job_offer";
         public static final String PERSONALITY = "/personality";
         public static final String PASSWORD = "/password";
+        public static final String RATE = "/rate";
 
     }
 }

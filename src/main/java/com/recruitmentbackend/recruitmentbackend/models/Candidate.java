@@ -57,6 +57,8 @@ public class Candidate {
     private Boolean isAdmin;
     @Column(name = "color_choice", length = 30)
     private String colorChoice;
+    @Column(name = "nick_name_choice", length = 30)
+    private String nickNameChoice;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roleList;

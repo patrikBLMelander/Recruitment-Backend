@@ -2,12 +2,11 @@ package com.recruitmentbackend.recruitmentbackend.services;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.ApplyForJobRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
-import com.recruitmentbackend.recruitmentbackend.models.Candidate;
-import com.recruitmentbackend.recruitmentbackend.models.Competence;
-import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
-import com.recruitmentbackend.recruitmentbackend.models.Recruitment;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.SetRateOnCandidateRequest;
+import com.recruitmentbackend.recruitmentbackend.models.*;
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.JobOfferRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.RateRepository;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -33,6 +33,7 @@ public class JobOfferService {
     private final JobOfferRepository jobRepo;
     private final ServiceHelper serviceHelper;
     private final CandidateRepository candidateRepo;
+    private final RateRepository rateRepo;
 
     public List<JobOffer> getAllJobOffers() {
         log.info("Fetching all jobOffers");
@@ -89,4 +90,35 @@ public class JobOfferService {
         return msg;
 
     }
+    @Transactional
+    public String setNewRate(SetRateOnCandidateRequest request) {
+        Candidate candidate = serviceHelper.getCandidateById(request.getCandidateId());
+
+        for (Rate r : candidate.getRates()) {
+            if(r.getJobOfferId().equals(request.getJobOfferId())){
+
+                r.setValue(request.getRate());
+                final String msg = String.format("%s rate for: %s is now updated to %s", candidate.getId(), request.getJobOfferId(), request.getRate());
+                log.info(msg);
+                return msg;
+            }
+        }
+
+        Rate newRate = new Rate();
+        newRate.setCandidate(candidate);
+        newRate.setJobOfferId(request.getJobOfferId().toString());
+        newRate.setValue(request.getRate());
+
+        rateRepo.saveAndFlush(newRate);
+
+        candidate.getRates().add(newRate);
+
+        candidateRepo.saveAndFlush(candidate);
+
+
+        final String msg = String.format("%s rate for: %s is now set to %s", candidate.getId(), request.getJobOfferId(), request.getRate());
+        log.info(msg);
+        return msg;
+    }
+
 }

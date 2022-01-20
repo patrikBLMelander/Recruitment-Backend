@@ -209,6 +209,7 @@ public class CandidateService {
         newCandidate.setEducationList(new ArrayList<>());
         newCandidate.setCompetenciesList(new ArrayList<>());
         newCandidate.setColorChoice("default");
+        newCandidate.setNickNameChoice("default");
         newCandidate.setIsAdmin(false);
         newCandidate.setRates(new ArrayList<>());
     }
@@ -216,5 +217,6 @@ public class CandidateService {
     public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
         return encoder.matches(passwordToCheck, candidate.getPassword());
     }
+
 
 }

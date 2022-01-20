@@ -2,15 +2,13 @@ package com.recruitmentbackend.recruitmentbackend.controller;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.SetRateOnCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -35,23 +33,30 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    //ToDo: Skapa JobOffer, inparam Body av joboffer
+
     @PostMapping(JOB_OFFER+CREATE)
     public ResponseEntity<String> createJobOffer(@RequestBody CreateNewJobOfferRequest createNewJobOfferRequest) {
         var result = jobOfferService.createJobOffer(createNewJobOfferRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PutMapping(UPDATE+RATE)
+    public ResponseEntity<?> updateRate(@RequestBody SetRateOnCandidateRequest request){
+        var result = jobOfferService.setNewRate(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 
-    //ToDo: Hämta recruitment, inparam jobOffer_id
 
-    //ToDo: Uppdatera RecruitmentListors ordning, inparam Body av JobOffer, (uppdatera JobOffer i frontend och skicka in den färdiga listan)
 
-    //ToDo: Uppdatera RecruitmentListors kandidater, inparam Body av JobOffer, (uppdatera JobOffer i frontend och skicka in de färdiga listorna där kandidaterna fått ny plats)
 
-    //ToDo: SÄtt Rate på Candidate, inparam JobOffer_id, Candidate_id, Rate
 
-    //ToDo: Ändra visningsnamn på Candidates, inparam candidate_id, showedNickname
+    //ToDo: Uppdatera RecruitmentListors ordning, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in den färdiga listan)
+
+    //ToDo: Uppdatera RecruitmentListors kandidater, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in de färdiga listorna där kandidaterna fått ny plats)
+
+
+
+    //ToDo: Ändra visningsnamn på Candidates, param candidate_id, showedNickname
 
 
 
