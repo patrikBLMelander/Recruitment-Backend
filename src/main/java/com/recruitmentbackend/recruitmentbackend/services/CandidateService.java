@@ -185,6 +185,17 @@ public class CandidateService {
         return msg;
     }
     @Transactional
+    public String deleteEducation(DeleteRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+        var education = serviceHelper.getEducationById(request.getToRemove());
+
+        educationRepo.delete(education);
+
+        final String msg = String.format("%s removed from user %s", education.getTitle(), candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+    @Transactional
     public String addCompetence(AddCompetenceRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
 
@@ -202,7 +213,7 @@ public class CandidateService {
         log.info(msg);
         return msg;
     }
-
+    @Transactional
     public String deleteCompetence(DeleteRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
         var competence = serviceHelper.getCompetenceById(request.getToRemove());
@@ -253,7 +264,5 @@ public class CandidateService {
     public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
         return encoder.matches(passwordToCheck, candidate.getPassword());
     }
-
-
 
 }

@@ -6,10 +6,8 @@ import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -42,6 +40,11 @@ public class CandidateController {
     public ResponseEntity<?> addEducation(@RequestBody AddEducationRequest educationRequest) {
         var result = candidateService.addEducation(educationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+    @DeleteMapping(EDUCATION + DELETE)
+    public ResponseEntity<?> deleteEducation(@RequestBody DeleteRequest request) {
+        var result = candidateService.deleteEducation(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
     @PostMapping(COMPETENCE)
     public ResponseEntity<?> addCompetence(@RequestBody AddCompetenceRequest competenceRequest) {
@@ -78,24 +81,7 @@ public class CandidateController {
 
 
 
-    //ToDo: Add/Update Description
-
-    //ToDo: Lägg till Experience
-    //ToDo: Ta bort Experience
-
-    //ToDo: Lägg till Education
-    //ToDo: Ta bort Education
-
-    //ToDo: Lägg till Competence
-    //ToDo: Ta bort Competence
-
-    //ToDo: Uppdatera Personality
-
-
-
     //ToDo: See all job Applied for
 
-    //ToDo: Spara färgSchema, inparam candidate_id, ColorChoice
 
-    //ToDo: Change Password, inparam Body av Candidate
 }
