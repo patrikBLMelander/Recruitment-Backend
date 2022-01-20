@@ -3,7 +3,6 @@ package com.recruitmentbackend.recruitmentbackend.controller.requests;
 import lombok.Getter;
 import lombok.Value;
 
-import java.util.UUID;
 
 /**
  * Created by Patrik Melander
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Value
 @Getter
 public class UpdatePasswordRequest {
-    UUID userId;
+    String userName;
     String newPassword;
     String oldPassword;
 }

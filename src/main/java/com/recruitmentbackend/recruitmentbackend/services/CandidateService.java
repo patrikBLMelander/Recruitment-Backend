@@ -97,9 +97,9 @@ public class CandidateService {
     }
 
     public String updatePassword(UpdatePasswordRequest request) {
-        var candidate = serviceHelper.getCandidateById(request.getUserId());
+        var candidate = serviceHelper.getCandidateByEmail(request.getUserName());
 
-        if(encoder.encode(request.getOldPassword()).equals(candidate.getPassword())){
+        if(checkIfOldPasswordMatches(candidate, request.getOldPassword())){
             candidate.setPassword(request.getNewPassword());
             candidateRepo.saveAndFlush(candidate);
         }else {
@@ -213,6 +213,8 @@ public class CandidateService {
         newCandidate.setRates(new ArrayList<>());
     }
 
-
+    public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
+        return encoder.matches(passwordToCheck, candidate.getPassword());
+    }
 
 }

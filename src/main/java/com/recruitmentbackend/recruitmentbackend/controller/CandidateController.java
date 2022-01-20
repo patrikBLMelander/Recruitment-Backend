@@ -6,6 +6,7 @@ import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
@@ -57,7 +58,7 @@ public class CandidateController {
     }
 
     @PutMapping(UPDATE+PASSWORD)
-    public ResponseEntity<?> updatePAssword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
         var result = candidateService.updatePassword(updatePasswordRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
