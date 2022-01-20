@@ -23,6 +23,9 @@ public class AppConstants {
         public static final String PERSONALITY = "/personality";
         public static final String PASSWORD = "/password";
         public static final String RATE = "/rate";
+        public static final String COLOR = "/color";
+        public static final String NICKNAME = "/nickname";
+
 
     }
 }
