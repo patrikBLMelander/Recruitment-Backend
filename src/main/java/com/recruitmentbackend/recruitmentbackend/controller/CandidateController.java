@@ -36,6 +36,11 @@ public class CandidateController {
         var result = candidateService.addExperience(experienceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+    @DeleteMapping(EXPERIENCE + DELETE)
+    public ResponseEntity<?> deleteExperience(@RequestBody DeleteRequest request) {
+        var result = candidateService.deleteExperience(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
     @PostMapping(EDUCATION)
     public ResponseEntity<?> addEducation(@RequestBody AddEducationRequest educationRequest) {
         var result = candidateService.addEducation(educationRequest);
