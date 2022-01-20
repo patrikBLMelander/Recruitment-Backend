@@ -26,7 +26,7 @@ public class CorsConfig {
         config.addAllowedOrigin(allowedOrigin);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/graphql/**", config); //ToDo: graphql?
+        source.registerCorsConfiguration("/spring/**", config);
         return new CorsFilter(source);
     }
 

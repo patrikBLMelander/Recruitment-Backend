@@ -95,6 +95,25 @@ public class CandidateService {
 
         return msg;
     }
+
+    public String updatePassword(UpdatePasswordRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
+
+        if(encoder.encode(request.getOldPassword()).equals(candidate.getPassword())){
+            candidate.setPassword(request.getNewPassword());
+            candidateRepo.saveAndFlush(candidate);
+        }else {
+            final String msg = String.format("Old Password dont match with user password");
+            log.info(msg);
+            return msg;
+        }
+
+        final String msg = String.format("Candidate %s successfully updated the password ", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
+
     @Transactional
     public String updatePresentation(UpdatePresentationRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());

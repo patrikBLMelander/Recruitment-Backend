@@ -56,6 +56,12 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PutMapping(UPDATE+PASSWORD)
+    public ResponseEntity<?> updatePAssword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
+        var result = candidateService.updatePassword(updatePasswordRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
 
     //ToDo: Add/Update Description
 
