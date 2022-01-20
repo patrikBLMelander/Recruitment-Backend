@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
  * Created by Patrik Melander
@@ -45,6 +47,11 @@ public class CandidateController {
     public ResponseEntity<?> addCompetence(@RequestBody AddCompetenceRequest competenceRequest) {
         var result = candidateService.addCompetence(competenceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+    @DeleteMapping(COMPETENCE + DELETE)
+    public ResponseEntity<?> deleteCompetence(@RequestBody DeleteRequest request) {
+        var result = candidateService.deleteCompetence(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
     @PutMapping(UPDATE+PRESENTATION)
     public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentationRequest) {

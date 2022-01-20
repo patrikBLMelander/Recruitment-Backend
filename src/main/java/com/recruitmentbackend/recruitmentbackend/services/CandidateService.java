@@ -203,6 +203,18 @@ public class CandidateService {
         return msg;
     }
 
+    public String deleteCompetence(DeleteRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+        var competence = serviceHelper.getCompetenceById(request.getToRemove());
+
+        competenceRepo.delete(competence);
+
+        final String msg = String.format("%s removed from user %s", competence.getName(), candidate.getId());
+        log.info(msg);
+        return msg;
+
+    }
+
 
     public String setColorChoice(ColorChoiceRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
@@ -241,6 +253,7 @@ public class CandidateService {
     public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
         return encoder.matches(passwordToCheck, candidate.getPassword());
     }
+
 
 
 }

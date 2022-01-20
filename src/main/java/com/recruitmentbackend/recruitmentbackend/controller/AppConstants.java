@@ -25,8 +25,7 @@ public class AppConstants {
         public static final String RATE = "/rate";
         public static final String COLOR = "/color";
         public static final String NICKNAME = "/nickname";
-
-
+        public static final String DELETE = "/delete";
     }
 }
 

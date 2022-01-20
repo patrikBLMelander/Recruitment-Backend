@@ -29,6 +29,8 @@ public class ServiceHelper {
     private final RecruitmentRepository recruitmentRepo;
     private final JobOfferRepository jobRepo;
     private final PersonalityRepository personalityRepo;
+    private final EducationRepository educationRepo;
+    private final ExperienceRepository experienceRepo;
 
     public void checkIfEmailExists(String email) {
         if (candidateRepo.existsByEmail(email)) {
@@ -142,6 +144,36 @@ public class ServiceHelper {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
 
     }
+    public Competence getCompetenceById(UUID toRemove) {
+        var competence = competenceRepo.findById(toRemove);
+        if (competence.isPresent()) {
+            log.info("Fetching user");
+            return competence.get();
+        }
+        final String msg = String.format("No competence found with id %s", toRemove);
+        log.info(msg);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+    }
+    public Education getEducationById(UUID toRemove) {
+        var education = educationRepo.findById(toRemove);
+        if (education.isPresent()) {
+            log.info("Fetching user");
+            return education.get();
+        }
+        final String msg = String.format("No education found with id %s", toRemove);
+        log.info(msg);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+    }
+    public Experience getExperienceById(UUID toRemove) {
+        var experience = experienceRepo.findById(toRemove);
+        if (experience.isPresent()) {
+            log.info("Fetching user");
+            return experience.get();
+        }
+        final String msg = String.format("No experience found with id %s", toRemove);
+        log.info(msg);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+    }
 
     public boolean alreadyApplied(Candidate candidate, JobOffer jobOffer) {
 
@@ -154,4 +186,7 @@ public class ServiceHelper {
         }
         return false;
     }
+
+
+
 }
