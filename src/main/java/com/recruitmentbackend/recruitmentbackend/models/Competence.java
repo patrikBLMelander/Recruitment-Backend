@@ -43,7 +43,7 @@ public class Competence {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "job_offer_id")
+    @JoinColumn(name = "jobOffer_id")
     private JobOffer jobOffer;
 
 }

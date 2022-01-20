@@ -63,6 +63,13 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PutMapping(UPDATE+COLOR)
+    public ResponseEntity<?> setColorChoice(@RequestBody ColorChoiceRequest request){
+        var result = candidateService.setColorChoice(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+
 
     //ToDo: Add/Update Description
 

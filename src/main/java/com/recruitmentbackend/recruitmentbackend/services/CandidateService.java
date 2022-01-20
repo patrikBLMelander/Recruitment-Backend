@@ -203,6 +203,30 @@ public class CandidateService {
         return msg;
     }
 
+
+    public String setColorChoice(ColorChoiceRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+
+        candidate.setColorChoice(request.getColorChoice());
+
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("%s changed color schema", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
+    public String setNicknameChoice(NicknamePresentationChoiceRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+
+        candidate.setNickNameChoice(request.getNicknameChoice());
+        candidateRepo.saveAndFlush(candidate);
+
+        final String msg = String.format("%s changed how nickname is presented", candidate.getId());
+        log.info(msg);
+        return msg;
+    }
+
     private void FillEmptyFields(Candidate newCandidate) {
         newCandidate.setPresentation("");
         newCandidate.setExperienceList(new ArrayList<>());
