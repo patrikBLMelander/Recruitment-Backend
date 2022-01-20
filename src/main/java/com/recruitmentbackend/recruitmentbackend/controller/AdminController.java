@@ -1,14 +1,17 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 
-import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewAdminRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.SetRateOnCandidateRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
+import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -25,6 +28,7 @@ public class AdminController {
 
     private final CandidateService candidateService;
     private final JobOfferService jobOfferService;
+
 
 
     @PostMapping(CREATE)
@@ -44,6 +48,18 @@ public class AdminController {
     public ResponseEntity<?> updateRate(@RequestBody SetRateOnCandidateRequest request){
         var result = jobOfferService.setNewRate(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PutMapping(UPDATE+NICKNAME)
+    public ResponseEntity<?> setNicknameChoice(@RequestBody NicknamePresentationChoiceRequest request){
+        var result = candidateService.setNicknameChoice(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(JOB_OFFER)
+    public ResponseEntity<JobOffer> getJobOfferDetails(@RequestBody ApplyForJobRequest request){
+        var result = jobOfferService.getOneJobOffer(request);
+        return ResponseEntity.ok(result);
     }
 
 

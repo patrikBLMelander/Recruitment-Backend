@@ -1,9 +1,8 @@
 package com.recruitmentbackend.recruitmentbackend.services;
 
-import com.recruitmentbackend.recruitmentbackend.controller.requests.ApplyForJobRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
-import com.recruitmentbackend.recruitmentbackend.controller.requests.SetRateOnCandidateRequest;
+import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
 import com.recruitmentbackend.recruitmentbackend.models.*;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.JobOfferRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.RateRepository;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,9 +35,29 @@ public class JobOfferService {
     private final CandidateRepository candidateRepo;
     private final RateRepository rateRepo;
 
-    public List<JobOffer> getAllJobOffers() {
+    public List<CandidateJobOfferDTO> getAllJobOffers() {
+        List<JobOffer> jobOffers = jobRepo.findAll();
+        List<CandidateJobOfferDTO> jobOfferDTOList = new ArrayList<>();
+
+        for (JobOffer j : jobOffers) {
+            CandidateJobOfferDTO jobOfferDTO = new CandidateJobOfferDTO(
+                    j.getId(),
+                    j.getTitle(),
+                    j.getPublishDate(),
+                    j.getApplyDate(),
+                    j.getPreview(),
+                    j.getCompanyDescription(),
+                    j.getAboutRole(),
+                    j.getLocation());
+
+            jobOfferDTOList.add(jobOfferDTO);
+        }
+
+
+
+
         log.info("Fetching all jobOffers");
-        return jobRepo.findAll();
+        return jobOfferDTOList;
     }
 
     @Transactional
@@ -121,4 +141,9 @@ public class JobOfferService {
         return msg;
     }
 
+
+    public JobOffer getOneJobOffer(ApplyForJobRequest request) {
+
+        return serviceHelper.getJobOfferById(request.getJobOfferId());
+    }
 }
