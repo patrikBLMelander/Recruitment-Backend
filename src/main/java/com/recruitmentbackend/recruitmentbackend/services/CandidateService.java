@@ -103,7 +103,7 @@ public class CandidateService {
             candidate.setPassword(request.getNewPassword());
             candidateRepo.saveAndFlush(candidate);
         }else {
-            final String msg = String.format("Old Password dont match with user password");
+            final String msg = "Old Password dont match with user password";
             log.info(msg);
             return msg;
         }
