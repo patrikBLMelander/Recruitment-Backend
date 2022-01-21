@@ -6,6 +6,7 @@ import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO
 import com.recruitmentbackend.recruitmentbackend.repositories.CandidateRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.JobOfferRepository;
 import com.recruitmentbackend.recruitmentbackend.repositories.RateRepository;
+import com.recruitmentbackend.recruitmentbackend.repositories.RecruitmentRepository;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -34,6 +34,7 @@ public class JobOfferService {
     private final ServiceHelper serviceHelper;
     private final CandidateRepository candidateRepo;
     private final RateRepository rateRepo;
+    private final RecruitmentRepository recruitmentRepo;
 
     public List<CandidateJobOfferDTO> getAllJobOffers() {
         List<JobOffer> jobOffers = jobRepo.findAll();
@@ -126,7 +127,7 @@ public class JobOfferService {
 
         Rate newRate = new Rate();
         newRate.setCandidate(candidate);
-        newRate.setJobOfferId(request.getJobOfferId().toString());
+        newRate.setJobOfferId(request.getJobOfferId());
         newRate.setValue(request.getRate());
 
         rateRepo.saveAndFlush(newRate);
@@ -146,4 +147,74 @@ public class JobOfferService {
 
         return serviceHelper.getJobOfferById(request.getJobOfferId());
     }
+
+    public String updateRecruitmentStepsOrder(JobOffer jobOffer) {
+        JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(jobOffer.getId());
+
+        List<Recruitment> newRecruitmentList = jobOfferToUpdate.getRecruitmentList();
+
+        for (Recruitment updated: jobOffer.getRecruitmentList()) {
+            boolean found = false;
+            for (Recruitment old : newRecruitmentList) {
+                if (old.getId()==updated.getId()){
+                    old.setIndex(updated.getIndex());
+                    old.setCandidateList(updated.getCandidateList());
+                    recruitmentRepo.saveAndFlush(old);
+                    found = true;
+                }
+
+            }
+            if (!found){
+                recruitmentRepo.saveAndFlush(updated);
+                newRecruitmentList.add(updated);
+            }
+        }
+        jobOfferToUpdate.setRecruitmentList(newRecruitmentList);
+        jobRepo.saveAndFlush(jobOfferToUpdate);
+
+        final String msg = String.format("%s is updated", jobOfferToUpdate.getId());
+        log.info(msg);
+        return msg;
+
+    }
+
+    public String addRecruitmentStep(AddRecruitmentsRequest request) {
+        Recruitment newRecruitment = new Recruitment();
+        JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
+        newRecruitment.setJobOffer(jobOfferToUpdate);
+        newRecruitment.setCandidateList(new ArrayList<>());
+        newRecruitment.setTitle(request.getTitle());
+        newRecruitment.setIndex(jobOfferToUpdate.getRecruitmentList().size());
+
+        recruitmentRepo.saveAndFlush(newRecruitment);
+
+        jobOfferToUpdate.getRecruitmentList().add(newRecruitment);
+
+        jobRepo.saveAndFlush(jobOfferToUpdate);
+
+
+        final String msg = String.format("%s is added", newRecruitment.getTitle());
+        log.info(msg);
+        return msg;
+    }
+
+    public String deleteRecruitmentStep(RemoveRecruitmentsRequest request) {
+        Recruitment recruitmentToDelete = serviceHelper.getRecruitmentById(request.getRecruitmentId());
+        String title = recruitmentToDelete.getTitle();
+        JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
+
+        Integer index = recruitmentToDelete.getIndex();
+
+        for (int i = index; i <jobOfferToUpdate.getRecruitmentList().size() ; i++) {
+            Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
+            recruitment.setIndex(recruitment.getIndex()-1);
+            recruitmentRepo.saveAndFlush(recruitment);
+        }
+
+        recruitmentRepo.delete(recruitmentToDelete);
+        final String msg = String.format("%s is removed from %s", title, jobOfferToUpdate.getId());
+        log.info(msg);
+        return msg;
+    }
+
 }

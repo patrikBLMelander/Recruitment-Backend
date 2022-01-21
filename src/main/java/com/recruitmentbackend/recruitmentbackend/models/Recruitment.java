@@ -31,6 +31,8 @@ public class Recruitment {
     private UUID id;
     @Column(name = "title")
     private String title;
+    @Column(name = "index")
+    private Integer index;
 
     @OneToMany(mappedBy = "recruitment")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -41,7 +43,8 @@ public class Recruitment {
     @JoinColumn(name = "jobOffer_id")
     private JobOffer jobOffer;
 
-    public Recruitment(String title, JobOffer jobOffer) {
+    public Recruitment(Integer index, String title, JobOffer jobOffer) {
+        this.index=index;
         this.title = title;
         this.jobOffer=jobOffer;
         List<Candidate> candidateList = new ArrayList<>();

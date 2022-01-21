@@ -28,7 +28,7 @@ public class CandidateController {
     @PostMapping(JOB_OFFER)
     public ResponseEntity<String> applyForJob(@RequestBody ApplyForJobRequest request) {
         var result = jobOfferService.applyForJob(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     @PostMapping(EXPERIENCE)
@@ -64,26 +64,25 @@ public class CandidateController {
     @PutMapping(UPDATE+PRESENTATION)
     public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentationRequest) {
         var result = candidateService.updatePresentation(updatePresentationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
     @PutMapping(UPDATE+PERSONALITY)
     public ResponseEntity<?> updatePersonality(@RequestBody UpdatePersonalityRequest updatePersonalityRequest) {
         var result = candidateService.updatePersonality(updatePersonalityRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     @PutMapping(UPDATE+PASSWORD)
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
         var result = candidateService.updatePassword(updatePasswordRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     @PutMapping(UPDATE+COLOR)
     public ResponseEntity<?> setColorChoice(@RequestBody ColorChoiceRequest request){
         var result = candidateService.setColorChoice(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-
 
 
     //ToDo: See all job Applied for

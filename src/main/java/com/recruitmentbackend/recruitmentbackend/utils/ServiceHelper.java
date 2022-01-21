@@ -76,15 +76,15 @@ public class ServiceHelper {
     }
     public List<Recruitment> defaultRecruitmentStepsList(JobOffer joboffer){
         List<Recruitment> listToReturn = new ArrayList<>();
-        Recruitment apply = new Recruitment("apply", joboffer);
+        Recruitment apply = new Recruitment(0,"apply", joboffer);
         recruitmentRepo.saveAndFlush(apply);
-        Recruitment interesting = new Recruitment("interesting", joboffer);
+        Recruitment interesting = new Recruitment(1,"interesting", joboffer);
         recruitmentRepo.saveAndFlush(interesting);
-        Recruitment interview = new Recruitment("interview", joboffer);
+        Recruitment interview = new Recruitment(2,"interview", joboffer);
         recruitmentRepo.saveAndFlush(interview);
-        Recruitment dismiss = new Recruitment("dismiss", joboffer);
+        Recruitment dismiss = new Recruitment(3,"dismiss", joboffer);
         recruitmentRepo.saveAndFlush(dismiss);
-        Recruitment hire = new Recruitment("hire", joboffer);
+        Recruitment hire = new Recruitment(4,"hire", joboffer);
         recruitmentRepo.saveAndFlush(hire);
         listToReturn.add(apply);
         listToReturn.add(interesting);
@@ -117,6 +117,17 @@ public class ServiceHelper {
             return candidate.get();
         }
         final String msg = String.format("No candidate found with id %s", id);
+        log.info(msg);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+    }
+
+    public Recruitment getRecruitmentById(UUID id) {
+        var recruitment = recruitmentRepo.findById(id);
+        if (recruitment.isPresent()) {
+            log.info("Fetching recruitment");
+            return recruitment.get();
+        }
+        final String msg = String.format("No recruitment found with id %s", id);
         log.info(msg);
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
     }

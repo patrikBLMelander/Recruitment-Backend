@@ -1,7 +1,5 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
-
 import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
-import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
 import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
@@ -10,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -47,13 +43,13 @@ public class AdminController {
     @PutMapping(UPDATE+RATE)
     public ResponseEntity<?> updateRate(@RequestBody SetRateOnCandidateRequest request){
         var result = jobOfferService.setNewRate(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     @PutMapping(UPDATE+NICKNAME)
     public ResponseEntity<?> setNicknameChoice(@RequestBody NicknamePresentationChoiceRequest request){
         var result = candidateService.setNicknameChoice(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     @PostMapping(JOB_OFFER)
@@ -62,18 +58,29 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping(JOB_OFFER+UPDATE)
+    public ResponseEntity<?> updateRecruitmentStepOrder(@RequestBody JobOffer jobOffer){
+        var result = jobOfferService.updateRecruitmentStepsOrder(jobOffer);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
+    @PostMapping(RECRUITMENT+UPDATE)
+    public ResponseEntity<?> addRecruitmentStep(@RequestBody AddRecruitmentsRequest request){
+        var result = jobOfferService.addRecruitmentStep(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
+    @DeleteMapping(RECRUITMENT+DELETE)
+    public ResponseEntity<?> addRecruitmentStep(@RequestBody RemoveRecruitmentsRequest request){
+        var result = jobOfferService.deleteRecruitmentStep(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
 
-
-
-
-    //ToDo: Uppdatera RecruitmentListors ordning, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in den färdiga listan)
+    //ToDo: Uppdatera RecruitmentListors ordning, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in den färdiga listan)RemoveRecruitmentsRequest
 
     //ToDo: Uppdatera RecruitmentListors kandidater, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in de färdiga listorna där kandidaterna fått ny plats)
 
+    //ToDo: Ta Bort kolumn i recruitment
 
-
-    //ToDo: Ändra visningsnamn på Candidates, param candidate_id, showedNickname
-
+    //ToDo: Lägg till column i recruitment
 
 
 }
