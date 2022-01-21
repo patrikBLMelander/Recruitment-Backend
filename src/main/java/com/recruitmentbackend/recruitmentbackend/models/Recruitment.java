@@ -34,8 +34,9 @@ public class Recruitment {
     @Column(name = "index")
     private Integer index;
 
-    @OneToMany(mappedBy = "recruitment")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany()
+    @JoinTable(name = "recruitment_candidate",
+            joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
             private List<Candidate> candidateList;
 
     @ManyToOne

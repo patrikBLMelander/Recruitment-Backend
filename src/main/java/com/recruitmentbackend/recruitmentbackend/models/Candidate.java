@@ -83,11 +83,6 @@ public class Candidate {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Personality> personalityList  = new ArrayList<>();
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "recruitment_id")
-    private Recruitment recruitment;
-
     public void addRoleToUser(String roleName, RoleRepository roleRepository) {
         if(this.roleList == null) {
             this.roleList = new ArrayList<>();

@@ -15,10 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -103,8 +101,8 @@ public class JobOfferService {
             return msg;
         }
 
-        candidate.setRecruitment(jobOffer.getRecruitmentList().get(0));
-        candidateRepo.saveAndFlush(candidate);
+        jobOffer.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
+
         jobOffer.getRecruitmentList().get(0).getCandidateList().add(candidate);
 
         jobRepo.saveAndFlush(jobOffer);
@@ -234,7 +232,11 @@ public class JobOfferService {
         Recruitment recruitmentToMoveTo = serviceHelper.getRecruitmentById(request.getNewRecruitmentId());
         Recruitment oldRecruitment = serviceHelper.getRecruitmentById(request.getOldRecruitmentId());
 
+        oldRecruitment.getCandidateList().remove(candidate);
+        recruitmentRepo.saveAndFlush(oldRecruitment);
 
+        recruitmentToMoveTo.getCandidateList().add(candidate);
+        recruitmentRepo.saveAndFlush(recruitmentToMoveTo);
 
         final String msg = String.format("%s is moved to %s", candidate.getId(), recruitmentToMoveTo.getTitle());
         log.info(msg);
