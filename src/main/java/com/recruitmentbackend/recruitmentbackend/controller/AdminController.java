@@ -59,8 +59,8 @@ public class AdminController {
     }
 
     @PutMapping(JOB_OFFER+UPDATE)
-    public ResponseEntity<?> updateRecruitmentStepOrder(@RequestBody JobOffer jobOffer){
-        var result = jobOfferService.updateRecruitmentStepsOrder(jobOffer);
+    public ResponseEntity<?> updateRecruitmentStepOrder(@RequestBody ChangeRecruitmentIndex request){
+        var result = jobOfferService.updateRecruitmentStepsOrder(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
     @PostMapping(RECRUITMENT+UPDATE)
@@ -74,13 +74,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
-    //ToDo: Uppdatera RecruitmentListors ordning, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in den färdiga listan)RemoveRecruitmentsRequest
+    @PutMapping(RECRUITMENT+CANDIDATES)
+    public ResponseEntity<?> changListForCandidate(@RequestBody ChangListForCandidateRequest request){
+        var result = jobOfferService.changListForCandidate(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
 
-    //ToDo: Uppdatera RecruitmentListors kandidater, param Body av JobOffer, (uppdatera JobOffer i frontend och skicka in de färdiga listorna där kandidaterna fått ny plats)
-
-    //ToDo: Ta Bort kolumn i recruitment
-
-    //ToDo: Lägg till column i recruitment
 
 
 }
