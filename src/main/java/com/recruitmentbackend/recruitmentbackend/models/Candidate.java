@@ -1,6 +1,5 @@
 package com.recruitmentbackend.recruitmentbackend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
 import com.recruitmentbackend.recruitmentbackend.repositories.RoleRepository;

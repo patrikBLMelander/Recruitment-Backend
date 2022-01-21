@@ -2,8 +2,6 @@ package com.recruitmentbackend.recruitmentbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class Recruitment {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "jobOffer_id")
+    @JoinColumn(name = "job_offer_id")
     private JobOffer jobOffer;
 
     public Recruitment(Integer index, String title, JobOffer jobOffer) {
