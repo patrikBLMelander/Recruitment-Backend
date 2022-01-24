@@ -18,5 +18,4 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GetFullDetailJobOfferRequest {
     UUID jobOfferId;
-    String test;
 }

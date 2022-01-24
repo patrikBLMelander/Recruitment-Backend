@@ -25,6 +25,7 @@ import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.
 @RestController
 @RequestMapping(BASE_API + PUBLIC)
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PublicController {
 
     private final JobOfferService jobService;
