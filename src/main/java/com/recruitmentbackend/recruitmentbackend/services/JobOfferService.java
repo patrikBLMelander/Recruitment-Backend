@@ -40,8 +40,14 @@ public class JobOfferService {
     public List<CandidateJobOfferDTO> getAllJobOffers() {
         List<JobOffer> jobOffers = jobRepo.findAll();
         List<CandidateJobOfferDTO> jobOfferDTOList = new ArrayList<>();
+        int counter = 0;
+
+
 
         for (JobOffer j : jobOffers) {
+            Integer totalCandidates = serviceHelper.getTotalAmountOfCandidates(j);
+            Integer newCandidates = serviceHelper.getAmountOfNewCandidates(j);
+
             CandidateJobOfferDTO jobOfferDTO = new CandidateJobOfferDTO(
                     j.getId(),
                     j.getTitle(),
@@ -50,7 +56,11 @@ public class JobOfferService {
                     j.getPreview(),
                     j.getCompanyDescription(),
                     j.getAboutRole(),
-                    j.getLocation());
+                    j.getLocation(),
+                    j.getImageUrl(),
+                    totalCandidates,
+                    newCandidates,
+            j.getCompetenceList());
 
             jobOfferDTOList.add(jobOfferDTO);
         }
@@ -72,6 +82,7 @@ public class JobOfferService {
         newJobOffer.setPreview(request.getPreview());
         newJobOffer.setCompanyDescription(request.getCompanyDescription());
         newJobOffer.setAboutRole(request.getAboutRole());
+        newJobOffer.setImageUrl("https://picsum.photos/250");
 
         newJobOffer.setLocation(request.getLocation());
 

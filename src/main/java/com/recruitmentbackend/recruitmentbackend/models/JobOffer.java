@@ -37,6 +37,8 @@ public class JobOffer {
     private UUID id;
     @Column(name = "title")
     private String title;
+    @Column(name = "img_url")
+    private String imageUrl;
     @Column(name = "publish_date")
     private LocalDate publishDate;
     @Column(name = "apply_date")

@@ -197,7 +197,22 @@ public class ServiceHelper {
         }
         return false;
     }
+    public Integer getTotalAmountOfCandidates(JobOffer joboffer) {
+        int totalAmount = 0;
+        for (Recruitment r : joboffer.getRecruitmentList()) {
+            totalAmount += r.getCandidateList().size();
+        }
+        return totalAmount;
+    }
 
+    public Integer getAmountOfNewCandidates(JobOffer joboffer) {
+        int newCandidates = 0;
+        for (Recruitment r : joboffer.getRecruitmentList()) {
+            if (r.getIndex()==0){
+                return newCandidates += r.getCandidateList().size();
+            }
+        }
+        return newCandidates;
 
-
+    }
 }

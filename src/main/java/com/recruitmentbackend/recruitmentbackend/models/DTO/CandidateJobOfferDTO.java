@@ -1,11 +1,13 @@
 package com.recruitmentbackend.recruitmentbackend.models.DTO;
 
+import com.recruitmentbackend.recruitmentbackend.models.Competence;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
 import javax.persistence.Column;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,4 +29,8 @@ public class CandidateJobOfferDTO {
     String companyDescription;
     String aboutRole;
     String location;
+    String imageUrl;
+    int totalCandidates;
+    int newCandidates;
+    List<Competence> competencies;
 }
