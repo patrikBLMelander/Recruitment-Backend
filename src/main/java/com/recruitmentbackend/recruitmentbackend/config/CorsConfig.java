@@ -18,6 +18,7 @@ public class CorsConfig {
     @Value("${allowed.origin.url}")
     private String allowedOrigin;
 
+
     @Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -25,7 +26,10 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin(allowedOrigin);
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

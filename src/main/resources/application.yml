@@ -14,7 +14,7 @@ spring:
       file-size-threshold: 2MB
 
 server:
-  port: 6000
+  port: 7000
   error:
     include-message: always
 
