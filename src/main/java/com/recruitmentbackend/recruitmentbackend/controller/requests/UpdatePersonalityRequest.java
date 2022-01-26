@@ -15,7 +15,7 @@ import java.util.UUID;
 @Value
 @Getter
 public class UpdatePersonalityRequest {
-    UUID userId;
+    String userId;
     Integer openness;
     Integer conscientiousness;
     Integer extroversion;

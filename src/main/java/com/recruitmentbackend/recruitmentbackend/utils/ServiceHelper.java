@@ -71,7 +71,7 @@ public class ServiceHelper {
         listToReturn.add(p3);
         listToReturn.add(p4);
         listToReturn.add(p5);
-
+        log.info("new personality profile created on {}", candidate.getId() );
         return listToReturn;
     }
     public List<Recruitment> defaultRecruitmentStepsList(JobOffer joboffer){
@@ -91,6 +91,8 @@ public class ServiceHelper {
         listToReturn.add(interview);
         listToReturn.add(dismiss);
         listToReturn.add(hire);
+
+        log.info("new default recruitment process created on {}", joboffer.getId() );
         return listToReturn;
     }
 
@@ -106,14 +108,14 @@ public class ServiceHelper {
             listToReturn.add(newCompetence);
         }
 
-
+        log.info("filled competencies on {}", newJobOffer.getId() );
         return listToReturn;
     }
 
     public Candidate getCandidateById(UUID id) {
         var candidate = candidateRepo.findById(id);
         if (candidate.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching user by UUID id");
             return candidate.get();
         }
         final String msg = String.format("No candidate found with id %s", id);
@@ -124,7 +126,7 @@ public class ServiceHelper {
     public Candidate getCandidateById(String id) {
         var candidate = candidateRepo.findById(UUID.fromString(id));
         if (candidate.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching user by String id");
             return candidate.get();
         }
         final String msg = String.format("No candidate found with id %s", id);
@@ -135,7 +137,7 @@ public class ServiceHelper {
     public Recruitment getRecruitmentById(UUID id) {
         var recruitment = recruitmentRepo.findById(id);
         if (recruitment.isPresent()) {
-            log.info("Fetching recruitment");
+            log.info("Fetching recruitment UUID id");
             return recruitment.get();
         }
         final String msg = String.format("No recruitment found with id %s", id);
@@ -146,7 +148,7 @@ public class ServiceHelper {
     public Candidate getCandidateByEmail(String email) {
         var candidate = candidateRepo.findByEmail(email);
         if (candidate.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching user by email");
             return candidate.get();
         }
         final String msg = String.format("No candidate found with id %s", email);
@@ -158,7 +160,7 @@ public class ServiceHelper {
     public JobOffer getJobOfferById(UUID id) {
         var jobOffer = jobRepo.findById(id);
         if (jobOffer.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching jobOffer by UUID");
             return jobOffer.get();
         }
         final String msg = String.format("No jobOffer found with id %s", id);
@@ -169,7 +171,7 @@ public class ServiceHelper {
     public Competence getCompetenceById(UUID toRemove) {
         var competence = competenceRepo.findById(toRemove);
         if (competence.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching Competence to remove by UUID");
             return competence.get();
         }
         final String msg = String.format("No competence found with id %s", toRemove);
@@ -179,7 +181,7 @@ public class ServiceHelper {
     public Education getEducationById(UUID toRemove) {
         var education = educationRepo.findById(toRemove);
         if (education.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching Education to remove by UUID");
             return education.get();
         }
         final String msg = String.format("No education found with id %s", toRemove);
@@ -189,7 +191,7 @@ public class ServiceHelper {
     public Experience getExperienceById(UUID toRemove) {
         var experience = experienceRepo.findById(toRemove);
         if (experience.isPresent()) {
-            log.info("Fetching user");
+            log.info("Fetching Experience to remove by UUID");
             return experience.get();
         }
         final String msg = String.format("No experience found with id %s", toRemove);
@@ -202,27 +204,31 @@ public class ServiceHelper {
         for (Recruitment r : jobOffer.getRecruitmentList()) {
             for (Candidate c: r.getCandidateList()) {
                 if(c.getId() == candidate.getId()){
+                    log.info("Candidate {} already applyed to {}",candidate.getId() , jobOffer.getId() );
                     return true;
                 }
             }
         }
+        log.info("Candidate {} can apply to {}",candidate.getId() , jobOffer.getId());
         return false;
     }
-    public Integer getTotalAmountOfCandidates(JobOffer joboffer) {
+    public Integer getTotalAmountOfCandidates(JobOffer jobOffer) {
         int totalAmount = 0;
-        for (Recruitment r : joboffer.getRecruitmentList()) {
+        for (Recruitment r : jobOffer.getRecruitmentList()) {
             totalAmount += r.getCandidateList().size();
         }
+        log.info("Total candidates in {} are {}",jobOffer.getId(), totalAmount );
         return totalAmount;
     }
 
-    public Integer getAmountOfNewCandidates(JobOffer joboffer) {
+    public Integer getAmountOfNewCandidates(JobOffer jobOffer) {
         int newCandidates = 0;
-        for (Recruitment r : joboffer.getRecruitmentList()) {
+        for (Recruitment r : jobOffer.getRecruitmentList()) {
             if (r.getIndex()==0){
                 return newCandidates += r.getCandidateList().size();
             }
         }
+        log.info("New candidates in {} are {}",jobOffer.getId(), newCandidates);
         return newCandidates;
 
     }

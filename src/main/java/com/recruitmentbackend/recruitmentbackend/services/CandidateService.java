@@ -282,7 +282,6 @@ public class CandidateService {
 
 
     public CandidateDTO getUserInfo(CandidateDetails request) {
-        System.out.println(request.getEmail());
         var candidate = serviceHelper.getCandidateByEmail(request.getEmail());
 
         return new CandidateDTO(

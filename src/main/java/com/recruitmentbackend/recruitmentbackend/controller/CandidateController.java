@@ -71,7 +71,6 @@ public class CandidateController {
     }
     @PutMapping(UPDATE+PRESENTATION)
     public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentationRequest) {
-        System.out.println(updatePresentationRequest.getPresentation());
         var result = candidateService.updatePresentation(updatePresentationRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }

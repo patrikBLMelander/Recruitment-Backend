@@ -15,7 +15,7 @@ import java.util.UUID;
 @Value
 @Getter
 public class SetRateOnCandidateRequest {
-    UUID candidateId;
+    String candidateId;
     String jobOfferId;
     double rate;
 }
