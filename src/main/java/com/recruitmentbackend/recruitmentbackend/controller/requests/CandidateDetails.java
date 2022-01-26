@@ -1,23 +1,18 @@
 package com.recruitmentbackend.recruitmentbackend.controller.requests;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
 /**
  * Created by Patrik Melander
- * Date: 2022-01-18
- * Time: 15:15
+ * Date: 2022-01-25
+ * Time: 15:19
  * Project: Recruitment-Backend
  * Copyright: MIT
  */
-@Value
 @Getter
-public class RegisterCandidateRequest {
-    int nickName;
-    String firstName;
-    String lastName;
-    String phone;
+@Value
+public class CandidateDetails {
     String email;
-    String password;
+    String test;
 }

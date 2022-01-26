@@ -1,6 +1,7 @@
 package com.recruitmentbackend.recruitmentbackend.controller.requests;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 
 /**
@@ -11,7 +12,7 @@ import lombok.Value;
  * Copyright: MIT
  */
 @Value
-@AllArgsConstructor
+@Getter
 public class CreateNewAdminRequest {
     String firstName;
     String lastName;

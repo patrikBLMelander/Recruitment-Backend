@@ -37,7 +37,7 @@ public class PublicController {
         return ResponseEntity.ok(result);
     }
 
-
+    @CrossOrigin("*")
     @PostMapping(CREATE)
     public ResponseEntity<String> createCandidate(@RequestBody RegisterCandidateRequest registerCandidateRequest) {
         var result = candidateService.createCandidate(registerCandidateRequest);
@@ -46,6 +46,7 @@ public class PublicController {
 
     //Denna ska ligga i Admin senare,
     //lättare att testa om det fungerar i Postman om man inte behöver vara inloggad under utvecklingen
+    @CrossOrigin("*")
     @GetMapping(CANDIDATES)
     public ResponseEntity<List<Candidate>> getCandidates() {
         var result = candidateService.getCandidates();

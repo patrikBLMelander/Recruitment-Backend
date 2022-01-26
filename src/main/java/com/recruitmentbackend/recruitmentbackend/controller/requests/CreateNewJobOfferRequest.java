@@ -2,6 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.controller.requests;
 
 import com.recruitmentbackend.recruitmentbackend.models.Competence;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.util.List;
  * Copyright: MIT
  */
 @Value
-@AllArgsConstructor
+@Getter
 public class CreateNewJobOfferRequest {
     String title;
     LocalDate applyDate;

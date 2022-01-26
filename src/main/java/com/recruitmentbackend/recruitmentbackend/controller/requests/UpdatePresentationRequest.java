@@ -15,7 +15,7 @@ import java.util.UUID;
 @Value
 @Getter
 public class UpdatePresentationRequest {
-    UUID userId;
+    String userId;
     String presentation;
 
 }

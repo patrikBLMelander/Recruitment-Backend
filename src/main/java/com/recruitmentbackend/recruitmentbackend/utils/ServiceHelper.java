@@ -121,6 +121,17 @@ public class ServiceHelper {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
     }
 
+    public Candidate getCandidateById(String id) {
+        var candidate = candidateRepo.findById(UUID.fromString(id));
+        if (candidate.isPresent()) {
+            log.info("Fetching user");
+            return candidate.get();
+        }
+        final String msg = String.format("No candidate found with id %s", id);
+        log.info(msg);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+    }
+
     public Recruitment getRecruitmentById(UUID id) {
         var recruitment = recruitmentRepo.findById(id);
         if (recruitment.isPresent()) {

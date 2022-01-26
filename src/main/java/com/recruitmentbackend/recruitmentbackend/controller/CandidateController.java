@@ -1,6 +1,7 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateDTO;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,17 @@ import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.
 @RestController
 @RequestMapping(BASE_API + CANDIDATES)
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CandidateController {
     private final JobOfferService jobOfferService;
     private final CandidateService candidateService;
 
+
+    @PostMapping()
+    public ResponseEntity<CandidateDTO> getCandidateInfo(@RequestBody CandidateDetails request) {
+        var result = candidateService.getUserInfo(request);
+        return ResponseEntity.ok(result);
+    }
 
     @PostMapping(JOB_OFFER)
     public ResponseEntity<String> applyForJob(@RequestBody ApplyForJobRequest request) {
@@ -63,6 +71,7 @@ public class CandidateController {
     }
     @PutMapping(UPDATE+PRESENTATION)
     public ResponseEntity<?> updatePresentation(@RequestBody UpdatePresentationRequest updatePresentationRequest) {
+        System.out.println(updatePresentationRequest.getPresentation());
         var result = candidateService.updatePresentation(updatePresentationRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }

@@ -3,6 +3,7 @@ package com.recruitmentbackend.recruitmentbackend.services;
 import com.recruitmentbackend.recruitmentbackend.config.security.Role;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
 import com.recruitmentbackend.recruitmentbackend.models.*;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateDTO;
 import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Created by Patrik Melander
@@ -44,13 +47,15 @@ public class CandidateService {
         final String phone = serviceHelper.formatPhoneForStorage(request.getPhone());
         var role = roleRepo.getByName(Role.RoleConstant.CANDIDATE);
 
+
+
         Candidate newCandidate = new Candidate();
 
         newCandidate.setFirstName(request.getFirstName());
         newCandidate.setLastName(request.getLastName());
-        newCandidate.setEmail(request.getEmail());
+        newCandidate.setEmail(request.getEmail().toLowerCase());
         newCandidate.setPassword(encoder.encode(request.getPassword()));
-
+        newCandidate.setIsAdmin(false);
         newCandidate.setPhone(phone);
         newCandidate.setNickName(request.getNickName());
 
@@ -81,7 +86,7 @@ public class CandidateService {
         newCandidate.setEmail(request.getEmail());
         newCandidate.setPassword(encoder.encode(request.getPassword()));
         newCandidate.setRoleList(List.of(role));
-
+        newCandidate.setIsAdmin(true);
         newCandidate.setPhone("");
         newCandidate.setNickName(1);
 
@@ -268,7 +273,6 @@ public class CandidateService {
         newCandidate.setCompetenciesList(new ArrayList<>());
         newCandidate.setColorChoice("default");
         newCandidate.setNickNameChoice("default");
-        newCandidate.setIsAdmin(false);
         newCandidate.setRates(new ArrayList<>());
     }
 
@@ -277,4 +281,22 @@ public class CandidateService {
     }
 
 
+    public CandidateDTO getUserInfo(CandidateDetails request) {
+        System.out.println(request.getEmail());
+        var candidate = serviceHelper.getCandidateByEmail(request.getEmail());
+
+        return new CandidateDTO(
+                candidate.getId(),
+                candidate.getNickName(),
+                candidate.getEmail(),
+                candidate.getPresentation(),
+                candidate.getIsAdmin(),
+                candidate.getColorChoice(),
+                candidate.getNickNameChoice(),
+                candidate.getRoleList(),
+                candidate.getExperienceList(),
+                candidate.getEducationList(),
+                candidate.getCompetenciesList(),
+                candidate.getPersonalityList());
+    }
 }

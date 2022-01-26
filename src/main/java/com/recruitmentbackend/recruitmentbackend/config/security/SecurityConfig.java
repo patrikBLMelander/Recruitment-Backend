@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.config.security;
 
+import com.recruitmentbackend.recruitmentbackend.config.CorsConfig;
 import com.recruitmentbackend.recruitmentbackend.config.security.filters.CustomAuthenticationFilter;
 import com.recruitmentbackend.recruitmentbackend.config.security.filters.JWTAuthorizationFilter;
 import com.recruitmentbackend.recruitmentbackend.config.security.filters.RequestLoggingFilter;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.stream.Collectors;
@@ -27,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JWTIssuer jwtIssuer;
     private final PasswordEncoder passwordEncoder;
     private final CandidateRepository candidateRepo;
+    private final CorsFilter corsFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,15 +52,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final JWTAuthorizationFilter jwtAuthorizationFilter = new JWTAuthorizationFilter(authenticationManager(), jwtIssuer);
         final CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManager(), jwtIssuer);
 
+
         http
+                .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(BASE_API + PUBLIC + "/**").permitAll()
-                .antMatchers(BASE_API + CANDIDATES + "/**").hasRole(Role.RoleConstant.CANDIDATE.name())
-                .antMatchers(BASE_API + ADMIN + "/**").hasRole(Role.RoleConstant.ADMIN.name())
+                .antMatchers(BASE_API+ "/**").permitAll()
+//                .antMatchers(BASE_API + CANDIDATES + "/**").hasRole(Role.RoleConstant.CANDIDATE.name())
+//                .antMatchers(BASE_API + ADMIN + "/**").hasRole(Role.RoleConstant.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(requestLoggingFilter, CustomAuthenticationFilter.class)
+                .addFilter(corsFilter)
                 .addFilter(authenticationFilter)
                 .addFilter(jwtAuthorizationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

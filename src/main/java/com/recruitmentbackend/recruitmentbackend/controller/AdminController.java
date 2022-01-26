@@ -20,6 +20,7 @@ import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.
 @RestController
 @RequestMapping(BASE_API + ADMIN)
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AdminController {
 
     private final CandidateService candidateService;

@@ -2,6 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.controller.requests;
 
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 /**
  * Created by Patrik Melander
@@ -12,7 +13,7 @@ import lombok.Value;
  */
 
 @Value
-@AllArgsConstructor
+@Getter
 public class ApplyForJobRequest {
     UUID candidateId;
     UUID jobOfferId;

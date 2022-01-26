@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -40,9 +41,6 @@ public class JobOfferService {
     public List<CandidateJobOfferDTO> getAllJobOffers() {
         List<JobOffer> jobOffers = jobRepo.findAll();
         List<CandidateJobOfferDTO> jobOfferDTOList = new ArrayList<>();
-        int counter = 0;
-
-
 
         for (JobOffer j : jobOffers) {
             Integer totalCandidates = serviceHelper.getTotalAmountOfCandidates(j);
@@ -75,6 +73,8 @@ public class JobOfferService {
     @Transactional
     public String createJobOffer(CreateNewJobOfferRequest request) {
         JobOffer newJobOffer = new JobOffer();
+        Random random = new Random();
+        int randomNumber = random.nextInt(30);
 
         newJobOffer.setTitle(request.getTitle());
         newJobOffer.setPublishDate(LocalDate.now());
@@ -82,11 +82,9 @@ public class JobOfferService {
         newJobOffer.setPreview(request.getPreview());
         newJobOffer.setCompanyDescription(request.getCompanyDescription());
         newJobOffer.setAboutRole(request.getAboutRole());
-        newJobOffer.setImageUrl("https://picsum.photos/250");
+        newJobOffer.setImageUrl("https://picsum.photos/250?random="+randomNumber);
 
         newJobOffer.setLocation(request.getLocation());
-
-
 
         jobRepo.saveAndFlush(newJobOffer);
         List<Competence> competenceList = serviceHelper.fillCompetenceList(request, newJobOffer);

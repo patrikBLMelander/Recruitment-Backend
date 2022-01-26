@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Value
 @Getter
-@AllArgsConstructor
 public class GetFullDetailJobOfferRequest {
     UUID jobOfferId;
 }
