@@ -46,6 +46,8 @@ public class CandidateController {
     }
     @DeleteMapping(EXPERIENCE + DELETE)
     public ResponseEntity<?> deleteExperience(@RequestBody DeleteRequest request) {
+        System.out.println(request.getCandidateId());
+        System.out.println(request.getToRemove());
         var result = candidateService.deleteExperience(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }

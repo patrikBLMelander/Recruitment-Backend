@@ -8,8 +8,10 @@ import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -102,15 +104,15 @@ public class CandidateService {
     }
 
     public String updatePassword(UpdatePasswordRequest request) {
-        var candidate = serviceHelper.getCandidateByEmail(request.getUserName());
+        var candidate = serviceHelper.getCandidateById(request.getUserId());
 
         if(checkIfOldPasswordMatches(candidate, request.getOldPassword())){
-            candidate.setPassword(request.getNewPassword());
+            candidate.setPassword(encoder.encode(request.getNewPassword()));
             candidateRepo.saveAndFlush(candidate);
         }else {
             final String msg = "Old Password dont match with user password";
             log.info(msg);
-            return msg;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
         }
 
         final String msg = String.format("Candidate %s successfully updated the password ", candidate.getId());
