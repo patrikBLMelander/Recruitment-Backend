@@ -62,10 +62,6 @@ public class JobOfferService {
 
             jobOfferDTOList.add(jobOfferDTO);
         }
-
-
-
-
         log.info("Fetching all jobOffers");
         return jobOfferDTOList;
     }
@@ -197,7 +193,7 @@ public class JobOfferService {
 
     }
 
-    public String addRecruitmentStep(AddRecruitmentsRequest request) {
+    public JobOffer addRecruitmentStep(AddRecruitmentsRequest request) {
         Recruitment newRecruitment = new Recruitment();
         JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
         newRecruitment.setJobOffer(jobOfferToUpdate);
@@ -214,7 +210,7 @@ public class JobOfferService {
 
         final String msg = String.format("%s is added", newRecruitment.getTitle());
         log.info(msg);
-        return msg;
+        return jobOfferToUpdate;
     }
 
     public String deleteRecruitmentStep(RemoveRecruitmentsRequest request) {
