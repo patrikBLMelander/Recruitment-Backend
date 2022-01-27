@@ -29,6 +29,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CandidateDTO {
      UUID id;
+     String firstName;
+     String lastName;
      int nickName;
      String email;
      String presentation;

@@ -288,6 +288,8 @@ public class CandidateService {
 
         return new CandidateDTO(
                 candidate.getId(),
+                candidate.getFirstName(),
+                candidate.getLastName(),
                 candidate.getNickName(),
                 candidate.getEmail(),
                 candidate.getPresentation(),
