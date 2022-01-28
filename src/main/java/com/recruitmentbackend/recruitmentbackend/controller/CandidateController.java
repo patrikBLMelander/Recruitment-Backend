@@ -93,9 +93,15 @@ public class CandidateController {
         var result = candidateService.setColorChoice(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
+    @DeleteMapping(DELETE)
+    public ResponseEntity<?> deleteCandidate(@RequestBody DeleteRequest request) {
+        var result = candidateService.deleteCandidate(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
 
 
     //ToDo: See all job Applied for
+
 
 
 }

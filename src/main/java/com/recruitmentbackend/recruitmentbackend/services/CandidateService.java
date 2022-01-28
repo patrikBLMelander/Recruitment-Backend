@@ -16,8 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+
 
 /**
  * Created by Patrik Melander
@@ -63,7 +62,7 @@ public class CandidateService {
 
         newCandidate.setRoleList(List.of(role));
 
-        FillEmptyFields(newCandidate);
+        serviceHelper.FillEmptyFields(newCandidate);
 
         candidateRepo.saveAndFlush(newCandidate);
 
@@ -92,7 +91,7 @@ public class CandidateService {
         newCandidate.setPhone("");
         newCandidate.setNickName(1);
 
-        FillEmptyFields(newCandidate);
+        serviceHelper.FillEmptyFields(newCandidate);
 
         candidateRepo.saveAndFlush(newCandidate);
 
@@ -106,7 +105,7 @@ public class CandidateService {
     public String updatePassword(UpdatePasswordRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getUserId());
 
-        if(checkIfOldPasswordMatches(candidate, request.getOldPassword())){
+        if(serviceHelper.checkIfOldPasswordMatches(candidate, request.getOldPassword())){
             candidate.setPassword(encoder.encode(request.getNewPassword()));
             candidateRepo.saveAndFlush(candidate);
         }else {
@@ -268,21 +267,6 @@ public class CandidateService {
         return msg;
     }
 
-    private void FillEmptyFields(Candidate newCandidate) {
-        newCandidate.setPresentation("");
-        newCandidate.setExperienceList(new ArrayList<>());
-        newCandidate.setEducationList(new ArrayList<>());
-        newCandidate.setCompetenciesList(new ArrayList<>());
-        newCandidate.setColorChoice("default");
-        newCandidate.setNickNameChoice("default");
-        newCandidate.setRates(new ArrayList<>());
-    }
-
-    public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
-        return encoder.matches(passwordToCheck, candidate.getPassword());
-    }
-
-
     public CandidateDTO getUserInfo(CandidateDetails request) {
         var candidate = serviceHelper.getCandidateByEmail(request.getEmail());
 
@@ -302,4 +286,28 @@ public class CandidateService {
                 candidate.getCompetenciesList(),
                 candidate.getPersonalityList());
     }
+
+
+    public String deleteCandidate(DeleteRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+        candidateRepo.delete(candidate);
+
+        final String msg = String.format("%s is removed from database", request.getCandidateId());
+        log.info(msg);
+        return msg;
+
+    }
+
+    public String deleteAdmin(DeleteRequest request) {
+        var candidate = serviceHelper.getCandidateById(request.getCandidateId());
+        candidateRepo.delete(candidate);
+
+        final String msg = String.format("%s is removed from database", request.getCandidateId());
+        log.info(msg);
+        return msg;
+
+    }
+
+
+
 }

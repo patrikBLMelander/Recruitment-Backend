@@ -80,7 +80,10 @@ public class AdminController {
         var result = jobOfferService.changListForCandidate(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-
-
+    @DeleteMapping(DELETE)
+    public ResponseEntity<?> deleteCandidate(@RequestBody DeleteRequest request) {
+        var result = candidateService.deleteCandidate(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
 
 }

@@ -10,7 +10,9 @@ import com.recruitmentbackend.recruitmentbackend.repositories.RecruitmentReposit
 import com.recruitmentbackend.recruitmentbackend.utils.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -103,9 +105,17 @@ public class JobOfferService {
         if(serviceHelper.alreadyApplied(candidate, jobOffer)){
             final String msg = String.format("%s already applied for: %s", candidate.getId(), jobOffer.getId());
             log.info(msg);
-            return msg;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
         }
+        Rate newRate= new Rate();
+        newRate.setValue(0);
+        newRate.setCandidate(candidate);
+        newRate.setJobOfferId(jobOffer.getId().toString());
+        rateRepo.saveAndFlush(newRate);
 
+        candidate.getRates().add(newRate);
+
+        candidateRepo.saveAndFlush(candidate);
         jobOffer.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
 
         jobOffer.getRecruitmentList().get(0).getCandidateList().add(candidate);
@@ -158,36 +168,54 @@ public class JobOfferService {
         Recruitment recruitmentToMove = serviceHelper.getRecruitmentById(request.getRecruitmentId());
         JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
 
-        Integer oldIndex = recruitmentToMove.getIndex();
-        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
-        //Move To the right
-        if(oldIndex<request.getNewIndex()){
-            for (int i = oldIndex; i <=request.getNewIndex() ; i++) {
-                Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
-                recruitment.setIndex(recruitment.getIndex()-1);
-                recruitmentRepo.saveAndFlush(recruitment);
+        int indexToRemove =-1;
+        for (int i = 0; i < jobOfferToUpdate.getRecruitmentList().size(); i++) {
+            if (jobOfferToUpdate.getRecruitmentList().get(i).getId()==request.getRecruitmentId()){
+                final String msg = String.format("Moving: %s to index %s", recruitmentToMove.getTitle(), i);
+                log.info(msg);
+                indexToRemove=i;
+
             }
-        //Move to the left
-        }else if (oldIndex>request.getNewIndex()){
-            for (int i = request.getNewIndex(); i <oldIndex ; i++) {
-                Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
-                recruitment.setIndex(recruitment.getIndex()+1);
-                recruitmentRepo.saveAndFlush(recruitment);
-            }
-        }else{
-            final String msg = "no update was done";
+        }
+        if (indexToRemove==-1){
+            final String msg = String.format("Could not move: %s", recruitmentToMove.getTitle());
             log.info(msg);
             return msg;
         }
+        jobOfferToUpdate.getRecruitmentList().remove(indexToRemove);
 
-        recruitmentToMove.setIndex(request.getNewIndex());
-        recruitmentRepo.saveAndFlush(recruitmentToMove);
+        jobOfferToUpdate.getRecruitmentList().add(request.getNewIndex(),recruitmentToMove);
 
-        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
-
+//        Integer oldIndex = recruitmentToMove.getIndex();
+//        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
+//        //Move To the right
+//        if(oldIndex<request.getNewIndex()){
+//            for (int i = oldIndex; i <=request.getNewIndex() ; i++) {
+//                Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
+//                recruitment.setIndex(recruitment.getIndex()-1);
+//                recruitmentRepo.saveAndFlush(recruitment);
+//            }
+//        //Move to the left
+//        }else if (oldIndex>request.getNewIndex()){
+//            for (int i = request.getNewIndex(); i <oldIndex ; i++) {
+//                Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
+//                recruitment.setIndex(recruitment.getIndex()+1);
+//                recruitmentRepo.saveAndFlush(recruitment);
+//            }
+//        }else{
+//            final String msg = "no update was done";
+//            log.info(msg);
+//            return msg;
+//        }
+//
+//        recruitmentToMove.setIndex(request.getNewIndex());
+//        recruitmentRepo.saveAndFlush(recruitmentToMove);
+//
+//        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
+//
         jobRepo.saveAndFlush(jobOfferToUpdate);
 
-        final String msg = String.format("%s is moved to index %s", recruitmentToMove.getTitle(), recruitmentToMove.getIndex());
+        final String msg = String.format("%s is moved to index %s", recruitmentToMove.getTitle(), request.getNewIndex());
         log.info(msg);
         return msg;
 
@@ -227,6 +255,9 @@ public class JobOfferService {
         }
 
         recruitmentRepo.delete(recruitmentToDelete);
+
+
+
         final String msg = String.format("%s is removed from %s", title, jobOfferToUpdate.getId());
         log.info(msg);
         return msg;

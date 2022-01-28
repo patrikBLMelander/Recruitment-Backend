@@ -1,11 +1,14 @@
 package com.recruitmentbackend.recruitmentbackend.utils;
 
+import com.recruitmentbackend.recruitmentbackend.controller.requests.CandidateDetails;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
 import com.recruitmentbackend.recruitmentbackend.models.*;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateDTO;
 import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,6 +34,7 @@ public class ServiceHelper {
     private final PersonalityRepository personalityRepo;
     private final EducationRepository educationRepo;
     private final ExperienceRepository experienceRepo;
+    private final PasswordEncoder encoder;
 
     public void checkIfEmailExists(String email) {
         if (candidateRepo.existsByEmail(email)) {
@@ -232,4 +236,22 @@ public class ServiceHelper {
         return newCandidates;
 
     }
+
+
+    public void FillEmptyFields(Candidate newCandidate) {
+        newCandidate.setPresentation("");
+        newCandidate.setExperienceList(new ArrayList<>());
+        newCandidate.setEducationList(new ArrayList<>());
+        newCandidate.setCompetenciesList(new ArrayList<>());
+        newCandidate.setColorChoice("default");
+        newCandidate.setNickNameChoice("default");
+        newCandidate.setRates(new ArrayList<>());
+    }
+
+    public boolean checkIfOldPasswordMatches(Candidate candidate, String passwordToCheck) {
+        return encoder.matches(passwordToCheck, candidate.getPassword());
+    }
+
+
+
 }
