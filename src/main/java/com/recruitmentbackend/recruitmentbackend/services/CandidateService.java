@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +28,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class CandidateService {
+    private final JobOfferRepository jobRepo;
     private final CandidateRepository candidateRepo;
     private final RoleRepository roleRepo;
     private final PasswordEncoder encoder;
@@ -36,6 +36,7 @@ public class CandidateService {
     private final ExperienceRepository experienceRepo;
     private final EducationRepository educationRepo;
     private final CompetenceRepository competenceRepo;
+    private final RecruitmentRepository recruitmentRepo;
 
     public List<Candidate> getCandidates() {
         log.info("Fetching all candidates");
@@ -287,11 +288,20 @@ public class CandidateService {
                 candidate.getPersonalityList());
     }
 
-
+    @Transactional
     public String deleteCandidate(DeleteRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
-        candidateRepo.delete(candidate);
 
+
+        List<JobOffer> allJobOffers= jobRepo.findAll();
+        for (JobOffer jb : allJobOffers) {
+            for (Recruitment r : jb.getRecruitmentList()) {
+                System.out.println("in loop");
+                r.removeCandidate(candidate);
+                recruitmentRepo.saveAndFlush(r);
+            }
+        }
+        candidateRepo.delete(candidate);
         final String msg = String.format("%s is removed from database", request.getCandidateId());
         log.info(msg);
         return msg;

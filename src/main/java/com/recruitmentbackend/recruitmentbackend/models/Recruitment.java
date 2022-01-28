@@ -2,6 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Recruitment {
             joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
             private List<Candidate> candidateList;
 
-    @ManyToOne
+    @ManyToOne()
     @JsonIgnore
     @JoinColumn(name = "job_offer_id")
     private JobOffer jobOffer;
@@ -49,4 +50,9 @@ public class Recruitment {
         List<Candidate> candidateList = new ArrayList<>();
     }
 
+    public void removeCandidate (Candidate candidate){
+        if(candidateList.contains(candidate)){
+            this.candidateList.remove(candidate);
+        }
+    }
 }
