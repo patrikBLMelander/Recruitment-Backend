@@ -243,7 +243,7 @@ public class ServiceHelper {
         newCandidate.setExperienceList(new ArrayList<>());
         newCandidate.setEducationList(new ArrayList<>());
         newCandidate.setCompetenciesList(new ArrayList<>());
-        newCandidate.setColorChoice("default");
+        newCandidate.setColorChoice("teal");
         newCandidate.setNickNameChoice("default");
         newCandidate.setRates(new ArrayList<>());
     }

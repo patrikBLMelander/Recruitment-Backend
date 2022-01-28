@@ -28,12 +28,14 @@ public class BootstrapConfig {
 
                 Candidate admin = new Candidate();
                     admin.setNickName(1);
-                    admin.setFirstName("Admin");
-                    admin.setLastName("Admin");
+                    admin.setFirstName("Patrik");
+                    admin.setLastName("Melander");
                     admin.setEmail("admin@email.com");
                     admin.setRoleList(List.of(superAdminRole, adminRole, candidateRole));
                     admin.setPassword(encoder.encode("admin1234"));
                     admin.setIsAdmin(true);
+                    admin.setNickNameChoice("default");
+                    admin.setColorChoice("teal");
 
                 candidateRepo.saveAndFlush(admin);
 

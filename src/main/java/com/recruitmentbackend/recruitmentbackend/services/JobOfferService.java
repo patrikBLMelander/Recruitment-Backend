@@ -161,6 +161,13 @@ public class JobOfferService {
 
     public JobOffer getOneJobOffer(ApplyForJobRequest request) {
 
+
+        JobOffer joboffer = serviceHelper.getJobOfferById(request.getJobOfferId());
+
+        for (Recruitment r : joboffer.getRecruitmentList()) {
+            System.out.println(r.getTitle());
+        }
+
         return serviceHelper.getJobOfferById(request.getJobOfferId());
     }
 
@@ -185,6 +192,10 @@ public class JobOfferService {
         jobOfferToUpdate.getRecruitmentList().remove(indexToRemove);
 
         jobOfferToUpdate.getRecruitmentList().add(request.getNewIndex(),recruitmentToMove);
+
+        recruitmentRepo.saveAndFlush(recruitmentToMove);
+        jobRepo.saveAndFlush(jobOfferToUpdate);
+
 
 //        Integer oldIndex = recruitmentToMove.getIndex();
 //        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
@@ -213,7 +224,9 @@ public class JobOfferService {
 //
 //        jobOfferToUpdate.getRecruitmentList().sort(Comparator.comparing(Recruitment::getIndex));
 //
-        jobRepo.saveAndFlush(jobOfferToUpdate);
+//
+//        jobRepo.saveAndFlush(jobOfferToUpdate);
+
 
         final String msg = String.format("%s is moved to index %s", recruitmentToMove.getTitle(), request.getNewIndex());
         log.info(msg);
