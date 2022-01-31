@@ -2,6 +2,7 @@ package com.recruitmentbackend.recruitmentbackend.controller;
 
 import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
 import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateDTO;
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -99,8 +102,15 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
+    @PostMapping(JOB_OFFER + RECRUITMENT)
+    public ResponseEntity<List<CandidateJobOfferDTO>> getJobOffer(@RequestBody CandidateDetails request) {
+        var result = jobOfferService.getAllMyProcesses(request);
+        return ResponseEntity.ok(result);
+    }
 
-    //ToDo: See all job Applied for
+
+
+
 
 
 

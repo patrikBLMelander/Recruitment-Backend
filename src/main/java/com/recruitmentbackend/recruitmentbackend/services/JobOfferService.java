@@ -45,23 +45,7 @@ public class JobOfferService {
         List<CandidateJobOfferDTO> jobOfferDTOList = new ArrayList<>();
 
         for (JobOffer j : jobOffers) {
-            Integer totalCandidates = serviceHelper.getTotalAmountOfCandidates(j);
-            Integer newCandidates = serviceHelper.getAmountOfNewCandidates(j);
-
-            CandidateJobOfferDTO jobOfferDTO = new CandidateJobOfferDTO(
-                    j.getId(),
-                    j.getTitle(),
-                    j.getPublishDate(),
-                    j.getApplyDate(),
-                    j.getPreview(),
-                    j.getCompanyDescription(),
-                    j.getAboutRole(),
-                    j.getLocation(),
-                    j.getImageUrl(),
-                    totalCandidates,
-                    newCandidates,
-            j.getCompetenceList());
-
+            CandidateJobOfferDTO jobOfferDTO = serviceHelper.transferJobOfferToJobOfferDTO(j);
             jobOfferDTOList.add(jobOfferDTO);
         }
         log.info("Fetching all jobOffers");
@@ -290,5 +274,27 @@ public class JobOfferService {
         final String msg = String.format("%s is moved to %s", candidate.getId(), recruitmentToMoveTo.getTitle());
         log.info(msg);
         return msg;
+    }
+
+    public List<CandidateJobOfferDTO> getAllMyProcesses(CandidateDetails request) {
+        Candidate candidate = serviceHelper.getCandidateByEmail(request.getEmail());
+        List<JobOffer> allJobOffers = jobRepo.findAll();
+
+        List<CandidateJobOfferDTO> listToReturn = new ArrayList<>();
+
+        for (JobOffer jo :  allJobOffers) {
+            for (Recruitment r : jo.getRecruitmentList()) {
+                for (Candidate c : r.getCandidateList()) {
+                    if(c.getId()==candidate.getId()){
+                        CandidateJobOfferDTO jDTO = serviceHelper.transferJobOfferToJobOfferDTO(jo);
+                        listToReturn.add(jDTO);
+                    }
+                }
+            }
+        }
+        final String msg = String.format("%s processes is found on %s", listToReturn.size(), candidate.getId());
+        log.info(msg);
+        return listToReturn;
+
     }
 }

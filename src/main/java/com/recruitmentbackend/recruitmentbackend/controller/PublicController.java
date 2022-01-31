@@ -3,7 +3,6 @@ package com.recruitmentbackend.recruitmentbackend.controller;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.RegisterCandidateRequest;
 import com.recruitmentbackend.recruitmentbackend.models.Candidate;
 import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
-import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ public class PublicController {
         return ResponseEntity.ok(result);
     }
 
-    @CrossOrigin("*")
     @PostMapping(CREATE)
     public ResponseEntity<String> createCandidate(@RequestBody RegisterCandidateRequest registerCandidateRequest) {
         var result = candidateService.createCandidate(registerCandidateRequest);
@@ -46,7 +44,6 @@ public class PublicController {
 
     //Denna ska ligga i Admin senare,
     //lättare att testa om det fungerar i Postman om man inte behöver vara inloggad under utvecklingen
-    @CrossOrigin("*")
     @GetMapping(CANDIDATES)
     public ResponseEntity<List<Candidate>> getCandidates() {
         var result = candidateService.getCandidates();

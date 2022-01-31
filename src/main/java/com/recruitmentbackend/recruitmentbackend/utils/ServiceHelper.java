@@ -1,9 +1,9 @@
 package com.recruitmentbackend.recruitmentbackend.utils;
 
-import com.recruitmentbackend.recruitmentbackend.controller.requests.CandidateDetails;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.CreateNewJobOfferRequest;
 import com.recruitmentbackend.recruitmentbackend.models.*;
-import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateDTO;
+
+import com.recruitmentbackend.recruitmentbackend.models.DTO.CandidateJobOfferDTO;
 import com.recruitmentbackend.recruitmentbackend.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -208,7 +208,7 @@ public class ServiceHelper {
         for (Recruitment r : jobOffer.getRecruitmentList()) {
             for (Candidate c: r.getCandidateList()) {
                 if(c.getId() == candidate.getId()){
-                    log.info("Candidate {} already applyed to {}",candidate.getId() , jobOffer.getId() );
+                    log.info("Candidate {} already applied to {}",candidate.getId() , jobOffer.getId() );
                     return true;
                 }
             }
@@ -229,7 +229,7 @@ public class ServiceHelper {
         int newCandidates = 0;
         for (Recruitment r : jobOffer.getRecruitmentList()) {
             if (r.getIndex()==0){
-                return newCandidates += r.getCandidateList().size();
+                 newCandidates += r.getCandidateList().size();
             }
         }
         log.info("New candidates in {} are {}",jobOffer.getId(), newCandidates);
@@ -253,5 +253,22 @@ public class ServiceHelper {
     }
 
 
+    public CandidateJobOfferDTO transferJobOfferToJobOfferDTO(JobOffer jo) {
+        Integer totalCandidates = getTotalAmountOfCandidates(jo);
+        Integer newCandidates = getAmountOfNewCandidates(jo);
 
+        return new CandidateJobOfferDTO(
+                jo.getId(),
+                jo.getTitle(),
+                jo.getPublishDate(),
+                jo.getApplyDate(),
+                jo.getPreview(),
+                jo.getCompanyDescription(),
+                jo.getAboutRole(),
+                jo.getLocation(),
+                jo.getImageUrl(),
+                totalCandidates,
+                newCandidates,
+                jo.getCompetenceList());
+    }
 }
