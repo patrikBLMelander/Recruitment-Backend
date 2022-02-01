@@ -1,5 +1,6 @@
 package com.recruitmentbackend.recruitmentbackend.controller;
 import com.recruitmentbackend.recruitmentbackend.controller.requests.*;
+import com.recruitmentbackend.recruitmentbackend.models.Candidate;
 import com.recruitmentbackend.recruitmentbackend.models.JobOffer;
 import com.recruitmentbackend.recruitmentbackend.services.CandidateService;
 import com.recruitmentbackend.recruitmentbackend.services.JobOfferService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
 
 import static com.recruitmentbackend.recruitmentbackend.controller.AppConstants.API_MAPPING.*;
 /**
@@ -84,6 +87,12 @@ public class AdminController {
     public ResponseEntity<?> deleteCandidate(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteCandidate(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
+
+    @GetMapping(CANDIDATES)
+    public ResponseEntity<List<Candidate>> getCandidates() {
+        var result = candidateService.getCandidates();
+        return ResponseEntity.ok(result);
     }
 
 }

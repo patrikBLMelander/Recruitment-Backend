@@ -44,11 +44,7 @@ public class PublicController {
 
     //Denna ska ligga i Admin senare,
     //lättare att testa om det fungerar i Postman om man inte behöver vara inloggad under utvecklingen
-    @GetMapping(CANDIDATES)
-    public ResponseEntity<List<Candidate>> getCandidates() {
-        var result = candidateService.getCandidates();
-        return ResponseEntity.ok(result);
-    }
+
 
 
 }
