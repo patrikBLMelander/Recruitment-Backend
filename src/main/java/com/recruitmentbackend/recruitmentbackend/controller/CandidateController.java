@@ -41,6 +41,11 @@ public class CandidateController {
         var result = jobOfferService.applyForJob(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
+    @PutMapping (JOB_OFFER+DELETE)
+    public ResponseEntity<?> removeApply(@RequestBody ApplyForJobRequest request) {
+        var result = jobOfferService.removeApply(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
 
     @PostMapping(EXPERIENCE)
     public ResponseEntity<?> addExperience(@RequestBody AddExperienceRequest experienceRequest) {
@@ -49,8 +54,6 @@ public class CandidateController {
     }
     @DeleteMapping(EXPERIENCE + DELETE)
     public ResponseEntity<?> deleteExperience(@RequestBody DeleteRequest request) {
-        System.out.println(request.getCandidateId());
-        System.out.println(request.getToRemove());
         var result = candidateService.deleteExperience(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
@@ -107,11 +110,4 @@ public class CandidateController {
         var result = jobOfferService.getAllMyProcesses(request);
         return ResponseEntity.ok(result);
     }
-
-
-
-
-
-
-
 }

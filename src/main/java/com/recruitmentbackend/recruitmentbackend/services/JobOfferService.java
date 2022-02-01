@@ -16,10 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -295,6 +292,35 @@ public class JobOfferService {
         final String msg = String.format("%s processes is found on %s", listToReturn.size(), candidate.getId());
         log.info(msg);
         return listToReturn;
+
+    }
+    @Transactional
+    public String removeApply(ApplyForJobRequest request) {
+        Candidate candidate = serviceHelper.getCandidateById(request.getCandidateId());
+        JobOffer jobOffer = serviceHelper.getJobOfferById(request.getJobOfferId());
+
+        UUID recruitmentId = null;
+
+        for (Recruitment r : jobOffer.getRecruitmentList()) {
+            if(r.getCandidateList().contains(candidate)){
+                recruitmentId = r.getId();
+            }
+        }
+        if (recruitmentId==null){
+            final String msg = String.format("%s already removed this job: %s", candidate.getId(), jobOffer.getId());
+            log.info(msg);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+        }
+        Recruitment recruitment = serviceHelper.getRecruitmentById(recruitmentId);
+
+        recruitment.getCandidateList().remove(candidate);
+        recruitmentRepo.saveAndFlush(recruitment);
+        candidateRepo.saveAndFlush(candidate);
+        jobRepo.saveAndFlush(jobOffer);
+
+        final String msg = String.format("%s removed: %s", candidate.getId(), jobOffer.getId());
+        log.info(msg);
+        return msg;
 
     }
 }
