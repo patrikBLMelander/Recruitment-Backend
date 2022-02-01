@@ -79,7 +79,8 @@ public class CandidateService {
     @Transactional
     public String createAdmin(CreateNewAdminRequest request) {
         serviceHelper.checkIfEmailExists(request.getEmail());
-        var role = roleRepo.getByName(Role.RoleConstant.ADMIN);
+        var role1 = roleRepo.getByName(Role.RoleConstant.ADMIN);
+        var role2 = roleRepo.getByName(Role.RoleConstant.CANDIDATE);
 
         Candidate newCandidate = new Candidate();
 
@@ -87,7 +88,7 @@ public class CandidateService {
         newCandidate.setLastName(request.getLastName());
         newCandidate.setEmail(request.getEmail());
         newCandidate.setPassword(encoder.encode(request.getPassword()));
-        newCandidate.setRoleList(List.of(role));
+        newCandidate.setRoleList(List.of(role1, role2));
         newCandidate.setIsAdmin(true);
         newCandidate.setPhone("");
         newCandidate.setNickName(1);
