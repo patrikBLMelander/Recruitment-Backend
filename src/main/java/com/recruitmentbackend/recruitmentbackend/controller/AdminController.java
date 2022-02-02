@@ -33,6 +33,7 @@ public class AdminController {
 
     @PostMapping(CREATE)
     public ResponseEntity<String> createAdmin(@RequestBody CreateNewAdminRequest createNewAdminRequest) {
+        System.out.println("inne i controller");
         var result = candidateService.createAdmin(createNewAdminRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -91,8 +92,8 @@ public class AdminController {
         var result = jobOfferService.changListForCandidate(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-    @DeleteMapping(DELETE)
-    public ResponseEntity<?> deleteCandidate(@RequestBody DeleteRequest request) {
+    @PostMapping(DELETE)
+    public ResponseEntity<?> deleteAdmin(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteCandidate(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }

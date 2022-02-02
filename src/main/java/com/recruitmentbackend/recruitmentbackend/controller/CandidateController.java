@@ -52,7 +52,7 @@ public class CandidateController {
         var result = candidateService.addExperience(experienceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-    @DeleteMapping(EXPERIENCE + DELETE)
+    @PostMapping(EXPERIENCE + DELETE)
     public ResponseEntity<?> deleteExperience(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteExperience(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
@@ -62,7 +62,7 @@ public class CandidateController {
         var result = candidateService.addEducation(educationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-    @DeleteMapping(EDUCATION + DELETE)
+    @PostMapping(EDUCATION + DELETE)
     public ResponseEntity<?> deleteEducation(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteEducation(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
@@ -72,7 +72,7 @@ public class CandidateController {
         var result = candidateService.addCompetence(competenceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-    @DeleteMapping(COMPETENCE + DELETE)
+    @PostMapping(COMPETENCE + DELETE)
     public ResponseEntity<?> deleteCompetence(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteCompetence(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
@@ -99,7 +99,7 @@ public class CandidateController {
         var result = candidateService.setColorChoice(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-    @DeleteMapping(DELETE)
+    @PostMapping(DELETE)
     public ResponseEntity<?> deleteCandidate(@RequestBody DeleteRequest request) {
         var result = candidateService.deleteCandidate(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);

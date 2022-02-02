@@ -78,6 +78,7 @@ public class CandidateService {
 
     @Transactional
     public String createAdmin(CreateNewAdminRequest request) {
+        System.out.println("Inne i serviceklassen");
         serviceHelper.checkIfEmailExists(request.getEmail());
         var role1 = roleRepo.getByName(Role.RoleConstant.ADMIN);
         var role2 = roleRepo.getByName(Role.RoleConstant.CANDIDATE);
@@ -292,7 +293,7 @@ public class CandidateService {
     @Transactional
     public String deleteCandidate(DeleteRequest request) {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
-
+        System.out.println("in deleteCandidate");
 
         List<JobOffer> allJobOffers= jobRepo.findAll();
         for (JobOffer jb : allJobOffers) {
