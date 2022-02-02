@@ -142,7 +142,7 @@ public class JobOfferService {
     @Transactional
     public JobOffer getOneJobOffer(ApplyForJobRequest request) {
         JobOffer joboffer = serviceHelper.getJobOfferById(request.getJobOfferId());
-        final String msg = String.format("Sending joboffer details on: %s", joboffer.getId());
+        final String msg = String.format("Sending jobOffer details on: %s", joboffer.getId());
         log.info(msg);
         return joboffer;
     }
@@ -163,7 +163,7 @@ public class JobOfferService {
         if (indexToRemove==-1){
             final String msg = String.format("Could not move: %s", recruitmentToMove.getTitle());
             log.info(msg);
-            return msg;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, msg);
         }
         jobOfferToUpdate.getRecruitmentList().remove(indexToRemove);
 

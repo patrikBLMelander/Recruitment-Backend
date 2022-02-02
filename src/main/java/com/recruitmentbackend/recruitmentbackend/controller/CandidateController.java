@@ -41,7 +41,7 @@ public class CandidateController {
         var result = jobOfferService.applyForJob(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-    @PutMapping (JOB_OFFER+DELETE)
+    @PostMapping (JOB_OFFER+DELETE)
     public ResponseEntity<?> removeApply(@RequestBody ApplyForJobRequest request) {
         var result = jobOfferService.removeApply(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);

@@ -62,7 +62,7 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping(JOB_OFFER+UPDATE)
+    @PostMapping(JOB_OFFER+UPDATE)
     public ResponseEntity<?> updateRecruitmentStepOrder(@RequestBody ChangeRecruitmentIndex request){
         var result = jobOfferService.updateRecruitmentStepsOrder(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
