@@ -32,5 +32,5 @@ public class CandidateJobOfferDTO {
     String imageUrl;
     int totalCandidates;
     int newCandidates;
-    List<Competence> competencies;
+    List<Competence> competenceList;
 }
