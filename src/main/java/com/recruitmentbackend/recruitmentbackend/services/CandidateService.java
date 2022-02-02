@@ -178,6 +178,8 @@ public class CandidateService {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
         var experience = serviceHelper.getExperienceById(request.getToRemove());
 
+        candidate.getExperienceList().remove(experience);
+        candidateRepo.saveAndFlush(candidate);
         experienceRepo.delete(experience);
 
         final String msg = String.format("%s removed from user %s", experience.getTitle(), candidate.getId());
@@ -209,6 +211,8 @@ public class CandidateService {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
         var education = serviceHelper.getEducationById(request.getToRemove());
 
+        candidate.getEducationList().remove(education);
+        candidateRepo.saveAndFlush(candidate);
         educationRepo.delete(education);
 
         final String msg = String.format("%s removed from user %s", education.getTitle(), candidate.getId());
@@ -238,6 +242,9 @@ public class CandidateService {
         var candidate = serviceHelper.getCandidateById(request.getCandidateId());
         var competence = serviceHelper.getCompetenceById(request.getToRemove());
 
+
+        candidate.getCompetenciesList().remove(competence);
+        candidateRepo.saveAndFlush(candidate);
         competenceRepo.delete(competence);
 
         final String msg = String.format("%s removed from user %s", competence.getName(), candidate.getId());
