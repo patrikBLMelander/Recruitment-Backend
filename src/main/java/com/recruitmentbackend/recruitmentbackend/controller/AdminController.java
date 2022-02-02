@@ -67,12 +67,20 @@ public class AdminController {
         var result = jobOfferService.updateRecruitmentStepsOrder(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
+
+    @PutMapping(JOB_OFFER+DELETE)
+    public ResponseEntity<?> removeJobOffer(@RequestBody ChangeRecruitmentIndex request){
+        var result = jobOfferService.updateRecruitmentStepsOrder(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
+
+
     @PostMapping(RECRUITMENT+UPDATE)
     public ResponseEntity<?> addRecruitmentStep(@RequestBody AddRecruitmentsRequest request){
         var result = jobOfferService.addRecruitmentStep(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
-    @DeleteMapping(RECRUITMENT+DELETE)
+    @PostMapping(RECRUITMENT+DELETE)
     public ResponseEntity<?> addRecruitmentStep(@RequestBody RemoveRecruitmentsRequest request){
         var result = jobOfferService.deleteRecruitmentStep(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);

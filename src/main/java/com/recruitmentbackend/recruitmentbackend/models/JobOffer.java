@@ -60,4 +60,10 @@ public class JobOffer {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Competence> competenceList = new ArrayList<>();
 
+    public void removeRecruitment (Recruitment recruitment){
+        if(recruitmentList.contains(recruitment)){
+            this.recruitmentList.remove(recruitment);
+        }
+    }
+
 }

@@ -139,19 +139,14 @@ public class JobOfferService {
         return msg;
     }
 
-
+    @Transactional
     public JobOffer getOneJobOffer(ApplyForJobRequest request) {
-
-
         JobOffer joboffer = serviceHelper.getJobOfferById(request.getJobOfferId());
-
-        for (Recruitment r : joboffer.getRecruitmentList()) {
-            System.out.println(r.getTitle());
-        }
-
-        return serviceHelper.getJobOfferById(request.getJobOfferId());
+        final String msg = String.format("Sending joboffer details on: %s", joboffer.getId());
+        log.info(msg);
+        return joboffer;
     }
-
+    @Transactional
     public String updateRecruitmentStepsOrder(ChangeRecruitmentIndex request) {
         Recruitment recruitmentToMove = serviceHelper.getRecruitmentById(request.getRecruitmentId());
         JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
@@ -214,7 +209,7 @@ public class JobOfferService {
         return msg;
 
     }
-
+    @Transactional
     public JobOffer addRecruitmentStep(AddRecruitmentsRequest request) {
         Recruitment newRecruitment = new Recruitment();
         JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
@@ -235,28 +230,7 @@ public class JobOfferService {
         return jobOfferToUpdate;
     }
 
-    public String deleteRecruitmentStep(RemoveRecruitmentsRequest request) {
-        Recruitment recruitmentToDelete = serviceHelper.getRecruitmentById(request.getRecruitmentId());
-        String title = recruitmentToDelete.getTitle();
-        JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
-
-        Integer index = recruitmentToDelete.getIndex();
-
-        for (int i = index; i <jobOfferToUpdate.getRecruitmentList().size() ; i++) {
-            Recruitment recruitment = jobOfferToUpdate.getRecruitmentList().get(i);
-            recruitment.setIndex(recruitment.getIndex()-1);
-            recruitmentRepo.saveAndFlush(recruitment);
-        }
-
-        recruitmentRepo.delete(recruitmentToDelete);
-
-
-
-        final String msg = String.format("%s is removed from %s", title, jobOfferToUpdate.getId());
-        log.info(msg);
-        return msg;
-    }
-
+    @Transactional
     public String changListForCandidate(ChangListForCandidateRequest request) {
         Candidate candidate = serviceHelper.getCandidateById(request.getCandidateId());
         Recruitment recruitmentToMoveTo = serviceHelper.getRecruitmentById(request.getNewRecruitmentId());
@@ -272,7 +246,7 @@ public class JobOfferService {
         log.info(msg);
         return msg;
     }
-
+    @Transactional
     public List<CandidateJobOfferDTO> getAllMyProcesses(CandidateDetails request) {
         Candidate candidate = serviceHelper.getCandidateByEmail(request.getEmail());
         List<JobOffer> allJobOffers = jobRepo.findAll();
@@ -322,5 +296,21 @@ public class JobOfferService {
         log.info(msg);
         return msg;
 
+    }
+    @Transactional
+    public JobOffer deleteRecruitmentStep(RemoveRecruitmentsRequest request) {
+        Recruitment recruitmentToDelete = serviceHelper.getRecruitmentById(request.getRecruitmentId());
+        String title = recruitmentToDelete.getTitle();
+        JobOffer jobOfferToUpdate = serviceHelper.getJobOfferById(request.getJobOfferId());
+        jobOfferToUpdate.getRecruitmentList().remove(recruitmentToDelete);
+        //jobOfferToUpdate.removeRecruitment(recruitmentToDelete);
+        jobRepo.saveAndFlush(jobOfferToUpdate);
+        recruitmentRepo.delete(recruitmentToDelete);
+
+
+
+        final String msg = String.format("%s is removed from %s", title, jobOfferToUpdate.getId());
+        log.info(msg);
+        return jobOfferToUpdate;
     }
 }
